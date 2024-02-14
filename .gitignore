@@ -5,5 +5,3 @@ dist
 # Python
 __pycache__
 .ipynb_checkpoints
-
-src/ipymolstar/static
