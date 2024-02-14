@@ -1,2 +1,5 @@
 # ipymolstar
-Molstar widget
+
+```sh
+pip install ipymolstar
+```
