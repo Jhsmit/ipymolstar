@@ -1,9 +1,12 @@
 {
 	"scripts": {
 		"dev": "npm run build -- --sourcemap=inline --watch",
-		"build": "esbuild js/widget.js --minify --format=esm --bundle --outdir=src/ipymolstar/static"
+		"build": "esbuild js/widget.js --minify --format=esm --bundle --outdir=src/ipymolstar/static --log-level=error"
 	},
-	"dependencies": {},
+	"dependencies": {
+		"@tldraw/tldraw": "^2.0.0-alpha.19",
+		"pdbe-molstar": "^3.1.3"
+	},
 	"devDependencies": {
 		"esbuild": "^0.20.0"
 	}
