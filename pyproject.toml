@@ -4,9 +4,12 @@ build-backend = "hatchling.build"
 
 [project]
 name = "ipymolstar"
-version = "0.0.0"
 dependencies = ["anywidget"]
 readme = "README.md"
+dynamic = ['version']
+
+[tool.hatch.version]
+path = "src/ipymolstar/__init__.py"
 
 [project.optional-dependencies]
 dev = ["watchfiles", "jupyterlab"]
@@ -18,6 +21,6 @@ features = ["dev"]
 
 [tool.hatch.build]
 only-packages = true
-artifacts = ["src/ipymolstar/static/*"]
+artifacts = ["src/ipymolstar/*"]
 
 

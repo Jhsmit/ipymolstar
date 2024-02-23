@@ -1,10 +1,4 @@
-import importlib.metadata
-
-try:
-    __version__ = importlib.metadata.version("ipymolstar")
-except importlib.metadata.PackageNotFoundError:
-    __version__ = "unknown"
-
 from ipymolstar.widget import PDBeMolstar
 
+__version__ = "0.0.1"
 __all__ = ["PDBeMolstar"]
