@@ -6,3 +6,5 @@ except importlib.metadata.PackageNotFoundError:
     __version__ = "unknown"
 
 from ipymolstar.widget import PDBeMolstar
+
+__all__ = ["PDBeMolstar"]
