@@ -4,6 +4,18 @@ import anywidget
 import traitlets
 
 
+THEMES = {
+    "light": {
+        "bg_color": "#F7F7F7",
+        "css": (pathlib.Path(__file__).parent / "pdbe-light.css").read_text(),
+    },
+    "dark": {
+        "bg_color": "#111111",
+        "css": (pathlib.Path(__file__).parent / "pdbe-dark.css").read_text(),
+    },
+}
+
+
 class PDBeMolstar(anywidget.AnyWidget):
     _esm = pathlib.Path(__file__).parent / "widget.js"
     _css = pathlib.Path(__file__).parent / "widget.css"
@@ -12,7 +24,7 @@ class PDBeMolstar(anywidget.AnyWidget):
     molecule_id = traitlets.Unicode().tag(sync=True)
     custom_data = traitlets.Dict(default_value=None, allow_none=True).tag(sync=True)
 
-    bg_color = traitlets.Unicode("#F7F7F7").tag(sync=True)
+    bg_color = traitlets.Unicode().tag(sync=True)
 
     spin = traitlets.Bool(False).tag(sync=True)
 
@@ -25,10 +37,10 @@ class PDBeMolstar(anywidget.AnyWidget):
 
     _select = traitlets.Dict().tag(sync=True)
 
-    # def __init__(self, *args, **kwargs):
-    #     print(self._css)
-    #     _css = (pathlib.Path(__file__).parent / "widget.css").read_text()
-    #     super().__init__(*args,  _css=_css, **kwargs)
+    def __init__(self, theme="light", **kwargs):
+        _css = THEMES[theme]["css"]
+        bg_color = kwargs.pop("bg_color", THEMES[theme]["bg_color"])
+        super().__init__(_css=_css, bg_color=bg_color, **kwargs)
 
     def color(self, data, non_selected_color=None):
         """
