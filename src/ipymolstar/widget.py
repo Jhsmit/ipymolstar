@@ -4,23 +4,13 @@ import anywidget
 import traitlets
 
 
-import pathlib
-
-import anywidget
-import traitlets
-from pathlib import Path
-
-
-__file__ = Path().resolve() / 'src' / 'ipymolstar' / 'script.py'
-
-
 class PDBeMolstar(anywidget.AnyWidget):
     _esm = pathlib.Path(__file__).parent / "widget.js"
     _css = pathlib.Path(__file__).parent / "widget.css"
     value = traitlets.Int(0).tag(sync=True)
 
     molecule_id = traitlets.Unicode().tag(sync=True)
-    custom_data = traitlets.Dict().tag(sync=True)
+    custom_data = traitlets.Dict(default_value=None, allow_none=True).tag(sync=True)
 
     bg_color = traitlets.Unicode("#F7F7F7").tag(sync=True)
 
@@ -39,7 +29,7 @@ class PDBeMolstar(anywidget.AnyWidget):
     #     print(self._css)
     #     _css = (pathlib.Path(__file__).parent / "widget.css").read_text()
     #     super().__init__(*args,  _css=_css, **kwargs)
-    
+
     def color(self, data, non_selected_color=None):
         """
         Alias for PDBE Molstar's `select` method.
