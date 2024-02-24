@@ -53,9 +53,6 @@ function render({ model, el }) {
 	viewerContainer.appendChild(childDiv);
 
 	var viewerInstance = new window.PDBeMolstarPlugin();
-	console.log(model.get('molecule_id'))
-	console.log('test')
-
 
 	var options = {
 		moleculeId: model.get('molecule_id'),
