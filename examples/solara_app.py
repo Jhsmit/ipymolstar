@@ -11,10 +11,34 @@ spin_cb = solara.reactive(False)
 theme = solara.reactive("light")
 
 
-def make_molstar():
-    print("make molstar")
-    c = PDBeMolstar(molecule_id=molecule_id.value, theme=theme.value)
-    return c
+def use_trait_observe(has_trait_object, name):
+    # TODO: this hook should go into solara
+    counter = solara.use_reactive(0)
+    counter.get()  # make the main component depend on this counter
+
+    def connect():
+        def update(change):
+            counter.value += 1
+
+        has_trait_object.observe(update, name)
+
+        def cleanup():
+            has_trait_object.unobserve(update, name)
+
+        return cleanup
+
+    solara.use_effect(connect, [])
+    return getattr(has_trait_object, name)
+
+
+def use_dark_effective():
+    return use_trait_observe(solara.lab.theme, "dark_effective")
+
+
+# def make_molstar():
+#     print("make molstar")
+#     c = PDBeMolstar(molecule_id=molecule_id.value, theme=theme.value)
+#     return c
 
 
 def rand_rgb() -> dict[str, int]:
@@ -43,7 +67,19 @@ def gen_color_data():
 
 @solara.component
 def Page():
-    c = solara.use_memo(make_molstar, dependencies=[molecule_id.value, theme.value])
+    with solara.AppBar():
+        solara.lab.ThemeToggle()
+
+    dark_effective = use_dark_effective()
+    theme_value = "dark" if dark_effective else "light"
+    print("theme_value", theme_value)
+
+    def make_molstar():
+        print("make molstar")
+        c = PDBeMolstar(molecule_id=molecule_id.value, theme=theme_value)
+        return c
+
+    c = solara.use_memo(make_molstar, dependencies=[molecule_id.value, theme_value])
 
     def set_spin(value):
         # doesnt work, triggers rerender instead of setting spin
@@ -97,7 +133,7 @@ def Page():
             value=theme.value,
             on_value=theme.set,
             values=["light", "dark"],
-        )
+        )  # works
         solara.Text(
             f"molecule_id: {molecule_id.value}, count: {count.value}, spin: {spin.value}, {c.spin}"
         )
