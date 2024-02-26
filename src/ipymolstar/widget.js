@@ -74,7 +74,7 @@ function render({ model, el }) {
     });
 
     model.on("change:hide_water", () => {
-        viewerInstance.visual.visibility({water:!model.get('hide_water')})
+        viewerInstance.visual.visibility({water:!model.get('hide_water')});
     });
     // .. add other structural properties ...
 
