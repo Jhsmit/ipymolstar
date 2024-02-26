@@ -124,13 +124,50 @@ function render({ model, el }) {
     // });
 
     model.on("change:_select", () => {
-        viewerInstance.visual.select(model.get("_select"));
+        const selectValue = model.get("_select");
+        if (selectValue !== null) {
+            viewerInstance.visual.select(selectValue);
+        }
+    });   
+    model.on("change:_focus", () => {
+        const focusValue = model.get("_focus");
+        if (focusValue !== null) {
+            viewerInstance.visual.focus(focusValue);
+        }
     });
-    
+    model.on("change:_highlight", () => {
+        const highlightValue = model.get("_highlight");
+        if (highlightValue !== null) {
+            viewerInstance.visual.highlight(highlightValue);
+        }
+    });
+    model.on("change:_clear_highlight", () => {
+        viewerInstance.visual.clearHighlight();
+    });
+    model.on("change:_clear_selection", () => {
+        viewerInstance.visual.clearSelection(model.get('_args')['number']);
+    })
+    model.on("change:_set_color", () => {
+        const colorValue = model.get("_set_color");
+        if (colorValue !== null) {
+            viewerInstance.visual.setColor(colorValue);
+        }
+    });
+    model.on("change:_reset", () => {
+        const resetValue = model.get("_reset");
+        if (resetValue !== null) {
+            viewerInstance.visual.reset(resetValue);
+        }
+    });
+    model.on("change:_update", () => {
+        const updateValue = model.get("_update");
+        if (updateValue !== null) {
+            viewerInstance.visual.update(updateValue);
+        }
+    });
     model.on("change:spin", () => {
         viewerInstance.visual.toggleSpin(model.get('spin'));
     });
-
     model.on("change:hide_polymer", () => {
         viewerInstance.visual.visibility({water:!model.get('hide_polymer')});
     });
@@ -149,10 +186,16 @@ function render({ model, el }) {
     model.on("change:hide_coarse", () => {
         viewerInstance.visual.visibility({water:!model.get('hide_coarse')});
     });
-    // .. add other structural properties ...
 
-    // cleanup (needed or no?)
+    // this could be a loop?
     return () => {
+        model.off("change:_select");
+        model.off("change:_focus");
+        model.off("change:_highlight");
+        model.off("change:_clear_highlight");
+        model.off("change:_clear_selection");
+        model.off("change:_set_color");
+        model.off("change:_reset");
         model.off("change:spin");
         model.off("change:hide_polymer");
         model.off("change:hide_water");

@@ -102,8 +102,15 @@ class PDBeMolstar(anywidget.AnyWidget):
     reactive = traitlets.Bool(False).tag(sync=True)
 
     spin = traitlets.Bool(False).tag(sync=True)
-    _focus = traitlets.Dict().tag(sync=True)
-    _select = traitlets.Dict().tag(sync=True)
+    _focus = traitlets.List(default_value=None, allow_none=True).tag(sync=True)
+    _highlight = traitlets.Dict(default_value=None, allow_none=True).tag(sync=True)
+    _clear_highlight = traitlets.Bool(default_value=False).tag(sync=True)
+    _select = traitlets.Dict(default_value=None, allow_none=True).tag(sync=True)
+    _clear_selection = traitlets.Bool(default_value=False).tag(sync=True)
+    _reset = traitlets.Dict(allow_none=True, default_value=None).tag(sync=True)
+    _update = traitlets.Dict(allow_none=True, default_value=None).tag(sync=True)
+
+    _args = traitlets.Dict().tag(sync=True)
 
     def __init__(self, theme="light", **kwargs):
         _css = THEMES[theme]["css"]
@@ -119,3 +126,31 @@ class PDBeMolstar(anywidget.AnyWidget):
         """
 
         self._select = {"data": data, "nonSelectedColor": non_selected_color}
+        self._select = None
+
+    def focus(self, data):
+        self._focus = data
+        self._focus = None
+
+    def highlight(self, data):
+        self._highlight = data
+        self._highlight = None
+
+    def clear_highlight(self):
+        self._clear_highlight = not self._clear_highlight
+
+    def clear_selection(self, structure_number=None):
+        self._args = {"number": structure_number}
+        self._clear_selection = not self._clear_selection
+
+    def set_color(self, data):
+        self._set_color = data
+        self._set_color = None
+
+    def reset(self, data):
+        self._reset = data
+        self._reset = None
+
+    def update(self, data):
+        self._update = data
+        self._update = None
