@@ -9,6 +9,9 @@ pip install ipymolstar
 
 ### development
 
+
+Windows:
+
 ```bash
 set ANYWIDGET_HMR=1
 jupyter lab
