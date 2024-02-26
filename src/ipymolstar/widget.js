@@ -104,6 +104,8 @@ function render({ model, el }) {
         pdbeLink: model.get('pdbe_link'),
         loadingOverlay: model.get('loading_overlay'),
         expanded: model.get('expanded'),
+        landscape: model.get('landscape'),
+        reactive: model.get('reactive')
 
 	};
     
