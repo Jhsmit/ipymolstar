@@ -2,6 +2,7 @@
 
 ![image](https://github.com/Jhsmit/ipymolstar/assets/7881506/589a94d5-2647-4977-90aa-c886c10cacb9)
 
+Try it jupyter lab on [JupyterLite](https://github.com/Jhsmit/ipymolstar-demo)
 
 ## Installation
 
