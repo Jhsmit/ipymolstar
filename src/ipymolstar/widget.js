@@ -66,11 +66,15 @@ function getHideCanvasControls(model){
 function render({ model, el }) {
 	let viewerContainer  = document.createElement("div");
 	viewerContainer.id = 'viewer_container';
-	viewerContainer.style.width = '100%';
-	viewerContainer.style.height = '500px';
 
-	let childDiv = document.createElement('div');
-	viewerContainer.appendChild(childDiv);
+    //width is ignored
+    //probably some other css setting somewhere which takes priority?
+	// viewerContainer.style.width = model.get('width');
+	viewerContainer.style.height = model.get('height');
+
+    console.log(model.get('width'));
+    console.log(model.get('height'));
+
 
 	var viewerInstance = new window.PDBeMolstarPlugin();
 
@@ -109,7 +113,7 @@ function render({ model, el }) {
 
 	};
     
-	viewerInstance.render(childDiv, options);
+	viewerInstance.render(viewerContainer, options);
 	el.appendChild(viewerContainer);
 
 

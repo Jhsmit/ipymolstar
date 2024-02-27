@@ -76,7 +76,9 @@ def Page():
 
     def make_molstar():
         print("make molstar")
-        c = PDBeMolstar(molecule_id=molecule_id.value, theme=theme_value)
+        c = PDBeMolstar(
+            molecule_id=molecule_id.value, theme=theme_value, height="400px"
+        )
         return c
 
     c = solara.use_memo(make_molstar, dependencies=[molecule_id.value, theme_value])

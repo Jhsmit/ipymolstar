@@ -20,6 +20,9 @@ class PDBeMolstar(anywidget.AnyWidget):
     _esm = pathlib.Path(__file__).parent / "widget.js"
     _css = pathlib.Path(__file__).parent / "pdbe-light.css"
 
+    # width = traitlets.Unicode("100%").tag(sync=True)
+    height = traitlets.Unicode("500px").tag(sync=True)
+
     molecule_id = traitlets.Unicode().tag(sync=True)
     custom_data = traitlets.Dict(default_value=None, allow_none=True).tag(sync=True)
     assembly_id = traitlets.Unicode().tag(sync=True)
