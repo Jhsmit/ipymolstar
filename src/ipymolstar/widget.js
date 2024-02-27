@@ -72,10 +72,6 @@ function render({ model, el }) {
 	// viewerContainer.style.width = model.get('width');
 	viewerContainer.style.height = model.get('height');
 
-    console.log(model.get('width'));
-    console.log(model.get('height'));
-
-
 	var viewerInstance = new window.PDBeMolstarPlugin();
 
 	var options = {
