@@ -19,6 +19,7 @@ view = PDBeMolstar(molecule_id='1qyn', theme='light', hide_water=True)
 view
 ```
 
+See the example notebook for more advanced usage. 
 
 ### Development
 
