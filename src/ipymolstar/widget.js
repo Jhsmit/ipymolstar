@@ -63,18 +63,8 @@ function getHideCanvasControls(model){
     return hideCanvasControls
 }
 
-function render({ model, el }) {
-	let viewerContainer  = document.createElement("div");
-	viewerContainer.id = 'viewer_container';
-
-    //width is ignored
-    //probably some other css setting somewhere which takes priority?
-	// viewerContainer.style.width = model.get('width');
-	viewerContainer.style.height = model.get('height');
-
-	var viewerInstance = new window.PDBeMolstarPlugin();
-
-	var options = {
+function getOptions(model){
+    var options = {
 		moleculeId: model.get('molecule_id'),
         customData: model.get('custom_data'),
         assemblyId: model.get('assembly_id'),
@@ -108,10 +98,22 @@ function render({ model, el }) {
         reactive: model.get('reactive')
 
 	};
-    
-	viewerInstance.render(viewerContainer, options);
-	el.appendChild(viewerContainer);
 
+    return options
+}
+
+function render({ model, el }) {
+	let viewerContainer  = document.createElement("div");
+	viewerContainer.id = 'viewer_container';
+
+    // width is ignored
+    // probably some other css setting somewhere which takes priority?
+	// viewerContainer.style.width = model.get('width');
+	viewerContainer.style.height = model.get('height');
+
+	var viewerInstance = new window.PDBeMolstarPlugin();   
+	viewerInstance.render(viewerContainer, getOptions(model));
+	el.appendChild(viewerContainer);
 
     // these require re-render
     // model.on("change:visual_style", () => {
@@ -165,6 +167,9 @@ function render({ model, el }) {
             viewerInstance.visual.update(updateValue);
         }
     });
+    model.on("change:molecule_id", () => {
+        viewerInstance.visual.update(getOptions(model), true);
+    });
     model.on("change:spin", () => {
         viewerInstance.visual.toggleSpin(model.get('spin'));
     });
@@ -196,6 +201,8 @@ function render({ model, el }) {
         model.off("change:_clear_selection");
         model.off("change:_set_color");
         model.off("change:_reset");
+        model.off("change:_update");
+        model.off("change:molecule_id");
         model.off("change:spin");
         model.off("change:hide_polymer");
         model.off("change:hide_water");
