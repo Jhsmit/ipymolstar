@@ -112,7 +112,10 @@ function render({ model, el }) {
 	viewerContainer.style.height = model.get('height');
 
 	var viewerInstance = new window.PDBeMolstarPlugin();   
-	viewerInstance.render(viewerContainer, getOptions(model));
+    viewerInstance.render(viewerContainer, getOptions(model)).then(() => {
+        viewerInstance.visual.toggleSpin(model.get('spin'));
+
+    });
 	el.appendChild(viewerContainer);
 
     // these require re-render
