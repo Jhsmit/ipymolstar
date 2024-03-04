@@ -109,6 +109,7 @@ class PDBeMolstar(anywidget.AnyWidget):
     _clear_highlight = traitlets.Bool(default_value=False).tag(sync=True)
     _select = traitlets.Dict(default_value=None, allow_none=True).tag(sync=True)
     _clear_selection = traitlets.Bool(default_value=False).tag(sync=True)
+    _set_color = traitlets.Dict(default_value=None, allow_none=True).tag(sync=True)
     _reset = traitlets.Dict(allow_none=True, default_value=None).tag(sync=True)
     _update = traitlets.Dict(allow_none=True, default_value=None).tag(sync=True)
 
