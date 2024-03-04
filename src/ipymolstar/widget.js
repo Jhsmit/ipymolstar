@@ -42,6 +42,18 @@ function getHideStructure(model){
     return hideStructure
 }
 
+function getVisibility(model){
+    var visibility = {
+        polymer: !model.get('hide_polymer'),
+        het: !model.get('hide_heteroatoms'),
+        water:!model.get('hide_water'),
+        carbs: !model.get('hide_carbs'),
+        // maps ?
+    }
+
+    return visibility
+}
+
 function getHideCanvasControls(model){
     var hideCanvasControls = [];
     if (model.get('hide_controls_icon')) {
@@ -76,7 +88,7 @@ function getOptions(model){
         visualStyle: model.get('visual_style'),
         loadMaps: model.get('load_maps'),
         bgColor: toRgb(model.get('bg_color')),
-        hideStructure: getHideStructure(model),
+        // hideStructure: getHideStructure(model),
         highlightColor: toRgb(model.get('highlight_color')),
         selectColor: toRgb(model.get('select_color')),
         lighting: model.get('lighting'),
@@ -112,11 +124,40 @@ function render({ model, el }) {
 	viewerContainer.style.height = model.get('height');
 
 	var viewerInstance = new window.PDBeMolstarPlugin();   
-    viewerInstance.render(viewerContainer, getOptions(model)).then(() => {
+    viewerInstance.render(viewerContainer, getOptions(model)); //.then(() => {
+        //viewerInstance.visual.toggleSpin(model.get('spin'));
+        // const selectValue = model.get("color_data");
+        // console.log(selectValue);
+        // console.log('here')
+        // if (selectValue !== null) {
+        //     viewerInstance.visual.select(selectValue);
+        // }
+ 
+    // });
+	el.appendChild(viewerContainer);
+
+    viewerInstance.events.loadComplete.subscribe(() => {
         viewerInstance.visual.toggleSpin(model.get('spin'));
 
-    });
-	el.appendChild(viewerContainer);
+        const selectValue = model.get("color_data");
+
+        console.log(selectValue);
+        console.log('now here')
+        if (selectValue !== null) {
+            viewerInstance.visual.select(selectValue);
+        }
+
+
+        // if hide_water is `True`, we cannot pass hideStructure to intial options
+        // TypeError: Cannot read properties of undefined (reading 'ref')
+        // viewerInstance.visual.visibility({water:!model.get('hide_water')});
+        console.log(getHideStructure(model))
+        viewerInstance.visual.visibility(getVisibility(model));
+        
+
+    }
+    
+    );
 
     // these require re-render
     // model.on("change:visual_style", () => {
@@ -128,8 +169,8 @@ function render({ model, el }) {
     //     viewerInstance.visual.update({lighting: model.get('lighting')});
     // });
 
-    model.on("change:_select", () => {
-        const selectValue = model.get("_select");
+    model.on("change:color_data", () => {
+        const selectValue = model.get("color_data");
         if (selectValue !== null) {
             viewerInstance.visual.select(selectValue);
         }
@@ -146,14 +187,14 @@ function render({ model, el }) {
             viewerInstance.visual.highlight(highlightValue);
         }
     });
-    model.on("change:_clear_highlight", () => {
+    model.on("change:_clear_highlight", () => {1
         viewerInstance.visual.clearHighlight();
     });
     model.on("change:_clear_selection", () => {
         viewerInstance.visual.clearSelection(model.get('_args')['number']);
     })
-    model.on("change:_set_color", () => {
-        const colorValue = model.get("_set_color");
+    model.on("change:color_data", () => {
+        const colorValue = model.get("color_data");
         if (colorValue !== null) {
             viewerInstance.visual.setColor(colorValue);
         }
