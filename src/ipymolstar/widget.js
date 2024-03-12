@@ -89,7 +89,6 @@ function getOptions(model) {
     visualStyle: model.get("visual_style"),
     loadMaps: model.get("load_maps"),
     bgColor: toRgb(model.get("bg_color")),
-    // hideStructure: getHideStructure(model),
     highlightColor: toRgb(model.get("highlight_color")),
     selectColor: toRgb(model.get("select_color")),
     lighting: model.get("lighting"),
@@ -123,29 +122,33 @@ function render({ model, el }) {
   let viewerContainer = document.createElement("div");
   viewerContainer.id = "viewer_container";
 
-  // width is ignored
-  // probably some other css setting somewhere which takes priority?
-  // viewerContainer.style.width = model.get('width');
   viewerContainer.style.height = model.get("height");
-
   var viewerInstance = new window.PDBeMolstarPlugin();
   viewerInstance.render(viewerContainer, getOptions(model)); //.then(() => {
-  //viewerInstance.visual.toggleSpin(model.get('spin'));
-  // const selectValue = model.get("color_data");
-  // console.log(selectValue);
-  // console.log('here')
-  // if (selectValue !== null) {
-  //     viewerInstance.visual.select(selectValue);
-  // }
-
-  // });
   el.appendChild(viewerContainer);
 
   // callbacks to be called after loading is complete
   let callbacksLoadComplete = {
     "change:spin": () => viewerInstance.visual.toggleSpin(model.get("spin")),
+    "change:hide_polymer": () => {
+      viewerInstance.visual.visibility({ polymer: !model.get("hide_polymer") });
+    },
     "change:hide_water": () => {
       viewerInstance.visual.visibility({ water: !model.get("hide_water") });
+    },
+    "change:hide_heteroatoms": () => {
+      viewerInstance.visual.visibility({ het: !model.get("hide_heteroatoms") });
+    },
+    "change:hide_carbs": () => {
+      viewerInstance.visual.visibility({ carbs: !model.get("hide_carbs") });
+    },
+    "change:hide_non_standard": () => {
+      viewerInstance.visual.visibility({
+        nonStandard: !model.get("hide_non_standard"),
+      });
+    },
+    "change:hide_coarse": () => {
+      viewerInstance.visual.visibility({ coarse: !model.get("hide_coarse") });
     },
     "change:color_data": () => {
       const selectValue = model.get("color_data");
@@ -155,23 +158,26 @@ function render({ model, el }) {
     },
   };
 
+  let otherCallbacks = {
+    "change:molecule_id": () => {
+      viewerInstance.visual.update(getOptions(model), true);
+    },
+  };
+
+  let combinedCallbacks = Object.assign(
+    {},
+    callbacksLoadComplete,
+    otherCallbacks
+  );
+
   viewerInstance.events.loadComplete.subscribe(() => {
-    // viewerInstance.visual.toggleSpin(model.get('spin'));
-    // console.log(getHideStructure(model))
-    // viewerInstance.visual.visibility(getVisibility(model));
-
-    // const selectValue = model.get("color_data");
-    // if (selectValue !== null) {
-    //     viewerInstance.visual.select(selectValue);
-    // }
-
     // trigger callabacks which need to
     Object.values(callbacksLoadComplete).forEach((callback) => callback());
   });
 
   // subscribe to events and collect unsubscribe funcs
-  let unsubscribes = Object.entries(callbacksLoadComplete).map(
-    ([name, callback]) => subscribe(model, name, callback)
+  let unsubscribes = Object.entries(combinedCallbacks).map(([name, callback]) =>
+    subscribe(model, name, callback)
   );
 
   // TODO return unsubscribe
@@ -193,88 +199,67 @@ function render({ model, el }) {
   //     }
   // });
 
-  model.on("change:_focus", () => {
-    const focusValue = model.get("_focus");
-    if (focusValue !== null) {
-      viewerInstance.visual.focus(focusValue);
-    }
-  });
-  model.on("change:_highlight", () => {
-    const highlightValue = model.get("_highlight");
-    if (highlightValue !== null) {
-      viewerInstance.visual.highlight(highlightValue);
-    }
-  });
-  model.on("change:_clear_highlight", () => {
-    1;
-    viewerInstance.visual.clearHighlight();
-  });
-  model.on("change:_clear_selection", () => {
-    viewerInstance.visual.clearSelection(model.get("_args")["number"]);
-  });
-  model.on("change:color_data", () => {
-    const colorValue = model.get("color_data");
-    if (colorValue !== null) {
-      viewerInstance.visual.setColor(colorValue);
-    }
-  });
-  model.on("change:_reset", () => {
-    const resetValue = model.get("_reset");
-    if (resetValue !== null) {
-      viewerInstance.visual.reset(resetValue);
-    }
-  });
-  model.on("change:_update", () => {
-    const updateValue = model.get("_update");
-    if (updateValue !== null) {
-      viewerInstance.visual.update(updateValue);
-    }
-  });
-  model.on("change:molecule_id", () => {
-    viewerInstance.visual.update(getOptions(model), true);
-  });
-  model.on("change:spin", () => {
-    viewerInstance.visual.toggleSpin(model.get("spin"));
-  });
-  model.on("change:hide_polymer", () => {
-    viewerInstance.visual.visibility({ water: !model.get("hide_polymer") });
-  });
+  // model.on("change:_focus", () => {
+  //   const focusValue = model.get("_focus");
+  //   if (focusValue !== null) {
+  //     viewerInstance.visual.focus(focusValue);
+  //   }
+  // });
+  // model.on("change:_highlight", () => {
+  //   const highlightValue = model.get("_highlight");
+  //   if (highlightValue !== null) {
+  //     viewerInstance.visual.highlight(highlightValue);
+  //   }
+  // });
+  // model.on("change:_clear_highlight", () => {
+  //   1;
+  //   viewerInstance.visual.clearHighlight();
+  // });
+  // model.on("change:_clear_selection", () => {
+  //   viewerInstance.visual.clearSelection(model.get("_args")["number"]);
+  // });
+  // model.on("change:_reset", () => {
+  //   const resetValue = model.get("_reset");
+  //   if (resetValue !== null) {
+  //     viewerInstance.visual.reset(resetValue);
+  //   }
+  // });
+  // model.on("change:_update", () => {
+  //   const updateValue = model.get("_update");
+  //   if (updateValue !== null) {
+  //     viewerInstance.visual.update(updateValue);
+  //   }
+  // });
+  //   model.on("change:molecule_id", () => {
+  //     viewerInstance.visual.update(getOptions(model), true);
+  //   });
+  // model.on("change:spin", () => {
+  //   viewerInstance.visual.toggleSpin(model.get("spin"));
+  // });
+  // model.on("change:hide_polymer", () => {
+  //   viewerInstance.visual.visibility({ water: !model.get("hide_polymer") });
+  // });
   // model.on("change:hide_water", () => {
   //     viewerInstance.visual.visibility({water:!model.get('hide_water')});
   // });
-  model.on("change:hide_heteroatoms", () => {
-    viewerInstance.visual.visibility({ water: !model.get("hide_heteroatoms") });
-  });
-  model.on("change:hide_carbs", () => {
-    viewerInstance.visual.visibility({ water: !model.get("hide_carbs") });
-  });
-  model.on("change:hide_non_standard", () => {
-    viewerInstance.visual.visibility({
-      water: !model.get("hide_non_standard"),
-    });
-  });
-  model.on("change:hide_coarse", () => {
-    viewerInstance.visual.visibility({ water: !model.get("hide_coarse") });
-  });
+  // model.on("change:hide_heteroatoms", () => {
+  //   viewerInstance.visual.visibility({ water: !model.get("hide_heteroatoms") });
+  // });
+  // model.on("change:hide_carbs", () => {
+  //   viewerInstance.visual.visibility({ water: !model.get("hide_carbs") });
+  // });
+  // model.on("change:hide_non_standard", () => {
+  //   viewerInstance.visual.visibility({
+  //     water: !model.get("hide_non_standard"),
+  //   });
+  // });
+  // model.on("change:hide_coarse", () => {
+  //   viewerInstance.visual.visibility({ water: !model.get("hide_coarse") });
+  // });
 
   // this could be a loop?
   return () => {
-    model.off("change:_select");
-    model.off("change:_focus");
-    model.off("change:_highlight");
-    model.off("change:_clear_highlight");
-    model.off("change:_clear_selection");
-    model.off("change:_set_color");
-    model.off("change:_reset");
-    model.off("change:_update");
-    model.off("change:molecule_id");
-    model.off("change:spin");
-    model.off("change:hide_polymer");
-    model.off("change:hide_water");
-    model.off("change:hide_heteroatoms");
-    model.off("change:hide_carbs");
-    model.off("change:hide_non_standard");
-    model.off("change:hide_coarse");
+    unsubscribes.forEach((unsubscribe) => unsubscribe());
   };
 }
 
