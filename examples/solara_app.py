@@ -1,157 +1,90 @@
 import solara
 from ipymolstar import PDBeMolstar
-import random
+from dataclasses import dataclass, asdict
+from solara.alias import rw, rv
 
 
-molecule_id = solara.reactive("1qyn")
-count = solara.reactive(0)
-spin = solara.reactive(False)
-
-spin_cb = solara.reactive(False)
-theme = solara.reactive("light")
-
-
-def use_trait_observe(has_trait_object, name):
-    # TODO: this hook should go into solara
-    counter = solara.use_reactive(0)
-    counter.get()  # make the main component depend on this counter
-
-    def connect():
-        def update(change):
-            counter.value += 1
-
-        has_trait_object.observe(update, name)
-
-        def cleanup():
-            has_trait_object.unobserve(update, name)
-
-        return cleanup
-
-    solara.use_effect(connect, [])
-    return getattr(has_trait_object, name)
+@dataclass
+class PDBeData:
+    molecule_id: str = "1qyn"
+    spin: bool = False
+    hide_polymer: bool = False
+    hide_water: bool = False
+    hide_heteroatoms: bool = False
+    hide_carbs: bool = False
+    hide_non_standard: bool = False
+    hide_coarse: bool = False
 
 
-def use_dark_effective():
-    return use_trait_observe(solara.lab.theme, "dark_effective")
+data = solara.Reactive(PDBeData())
+molecule_id_options = ["1qyn", "2pe4"]
+
+visibility_cbs = ["polymer", "water", "heteroatoms", "carbs", "non_standard", "coarse"]
 
 
-# def make_molstar():
-#     print("make molstar")
-#     c = PDBeMolstar(molecule_id=molecule_id.value, theme=theme.value)
-#     return c
-
-
-def rand_rgb() -> dict[str, int]:
-    """returns a random rgb color dict"""
-    return {
-        "r": random.randint(0, 255),
-        "g": random.randint(0, 255),
-        "b": random.randint(0, 255),
-    }
-
-
-def gen_color_data():
-    data = []
-    for chain in "ABCD":
-        d = {
-            "start_residue_number": 0,
-            "end_residue_number": 200,
-            "struct_asym_id": chain,
-            "color": rand_rgb(),
-            "focus": False,
-        }
-        data.append(d)
-
-    return data
+@solara.component
+def ProteinView(dark_effective: bool):
+    with solara.Card("Protein view"):
+        theme = "dark" if dark_effective else "light"
+        PDBeMolstar.element(**asdict(data.value), theme=theme)
 
 
 @solara.component
 def Page():
+    counter, set_counter = solara.use_state(0)
+    dark_effective = solara.lab.use_dark_effective()
+
     with solara.AppBar():
         solara.lab.ThemeToggle()
 
-    dark_effective = use_dark_effective()
-    theme_value = "dark" if dark_effective else "light"
-    print("theme_value", theme_value)
+    with solara.Columns([4, 8]):
+        with solara.Card("Controls"):
+            solara.Button(
+                "reset", on_click=lambda: set_counter(counter + 1), block=True
+            )
 
-    def make_molstar():
-        print("make molstar")
-        c = PDBeMolstar(
-            molecule_id=molecule_id.value, theme=theme_value, height="400px"
-        )
-        return c
+            values = [{"text": s.upper(), "value": s} for s in molecule_id_options]
+            solara.Select(
+                label="molecule id",
+                value=data.value.molecule_id,
+                values=values,
+                on_value=lambda x: data.update(molecule_id=x),
+            )
 
-    c = solara.use_memo(make_molstar, dependencies=[molecule_id.value, theme_value])
+            solara.Checkbox(
+                label="spin",
+                value=data.value.spin,
+                on_value=lambda x: data.update(spin=x),
+            )
 
-    def set_spin(value):
-        # doesnt work, triggers rerender instead of setting spin
-        print("value", value)
-        spin.set(value)
+            for struc_elem in visibility_cbs:
+                attr = f"hide_{struc_elem}"
 
-        c.spin = not c.spin
+                def on_value(x, attr=attr):
+                    data.update(**{attr: x})
 
-    def set_spin_cb(value):
-        # same issue as switch
-        print("cb setter", value)
-        spin_cb.set(value)
-        c.spin = value
+                solara.Checkbox(
+                    label=f"hide {struc_elem}",
+                    value=getattr(data.value, attr),
+                    on_value=on_value,
+                )
 
-    def set_true(*event):
-        # works
-        c.spin = True
+            btn = solara.Button("background color", block=True)
+            with solara.lab.Menu(activator=btn, close_on_content_click=False):
+                rv.ColorPicker(v_model="#ff00ff")  # todo connect to model
 
-    def set_false(*event):
-        # works
-        print("event", event)
-        c.spin = False
+        # with solara.Card("Protein view"):
+        #     PDBeMolstar.element(**asdict(data.value)).key(f"molstar-{counter}")
+        key = f"{counter}_{dark_effective}"
+        ProteinView(dark_effective).key(key)
 
-    def do_color():
-        # works
-        data = gen_color_data()
-        c.color(data, non_selected_color={"r": 0, "g": 87, "b": 0})
-
-    def toggle_water():
-        # works
-        c.hide_water = not c.hide_water
-
-    def toggle_spin():
-        c.spin = not c.spin
-
-    with solara.Card(style="width: 500px; height: 750px;"):
-        solara.InputText(
-            label="molecule id", value=molecule_id.value, on_value=molecule_id.set
-        )
-        solara.display(c)
-        solara.Button(label="increment", on_click=lambda: count.set(count.value + 1))
-        solara.Button(label="set true", on_click=set_true)
-        solara.Button(label="set false", on_click=set_false)
-        solara.Button(label="randcolor", on_click=do_color)
-        solara.Button(label="toggle water", on_click=toggle_water)
-        solara.Button(label="toggle spin", on_click=toggle_spin)
-        solara.Switch(label="spin", value=spin.value, on_value=set_spin)
-        solara.Checkbox(label="spin_cb", value=spin_cb.value, on_value=set_spin_cb)
-        solara.Select(
-            label="set theme",
-            value=theme.value,
-            on_value=theme.set,
-            values=["light", "dark"],
-        )  # works
-        solara.Text(
-            f"molecule_id: {molecule_id.value}, count: {count.value}, spin: {spin.value}, {c.spin}"
-        )
-        solara.Text(f"hide_water: {c.hide_water}")
+        # solara.Text(str(counter) + str(dark_effective))
 
 
-# @solara.component
-# def Page():
-#     # molecule_id, set_molecule_id = solara.use_state("1qyn")
-
-#     with solara.Card(style="width: 500px; height: 750px;"):
-#         solara.InputText(
-#             label="molecule id", value=molecule_id.value, on_value=molecule_id.set
-#         )
-#         # c = PDBeMolstar.element(molecule_id=molecule_id.value)
-#         c = PDBeMolstar(molecule_id=molecule_id.value)
-#         solara.display(c)
-
-#         solara.Text(f"molecule_id: {molecule_id.value}")
+@solara.component
+def Layout(children):
+    route, routes = solara.use_route()
+    dark_effective = solara.lab.use_dark_effective()
+    return solara.AppLayout(
+        children=children, toolbar_dark=dark_effective, color=None
+    )  # if dark_effective else "primary")
