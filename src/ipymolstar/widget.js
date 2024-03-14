@@ -165,6 +165,9 @@ function render({ model, el }) {
     "change:custom_data": () => {
       viewerInstance.visual.update(getOptions(model), true);
     },
+    "change:bg_color": () => {
+      viewerInstance.canvas.setBgColor(toRgb(model.get("bg_color")));
+    },
   };
 
   let combinedCallbacks = Object.assign(

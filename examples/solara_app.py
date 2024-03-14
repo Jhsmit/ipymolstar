@@ -1,5 +1,5 @@
 import solara
-from ipymolstar import PDBeMolstar
+from ipymolstar import PDBeMolstar, THEMES
 from dataclasses import dataclass, asdict
 from solara.alias import rw, rv
 import solara.lab
@@ -9,6 +9,7 @@ import solara.lab
 class PDBeData:
     molecule_id: str = "1qyn"
     custom_data: dict | None = None
+    bg_color: str = "#F7F7F7"
     spin: bool = False
     hide_polymer: bool = False
     hide_water: bool = False
@@ -57,10 +58,17 @@ def ProteinView(dark_effective: bool):
 def Page():
     counter, set_counter = solara.use_state(0)
     dark_effective = solara.lab.use_dark_effective()
+    dark_effective_previous = solara.use_previous(dark_effective)
 
     structure_type = solara.use_reactive("Protein")
     protein_id = solara.use_reactive(protein_store[0])
     molecule_key = solara.use_reactive(next(iter(molecule_store.keys())))
+
+    if dark_effective != dark_effective_previous:
+        if dark_effective:
+            data.update(bg_color=THEMES["dark"]["bg_color"])
+        else:
+            data.update(bg_color=THEMES["light"]["bg_color"])
 
     def update_molecule_data(value: str, name: str):
         if name == "protein_id":
@@ -139,7 +147,10 @@ def Page():
 
             btn = solara.Button("background color", block=True)
             with solara.lab.Menu(activator=btn, close_on_content_click=False):
-                rv.ColorPicker(v_model="#ff00ff")  # todo connect to model
+                rv.ColorPicker(
+                    v_model=data.value.bg_color,
+                    on_v_model=lambda x: data.update(bg_color=x),
+                )
 
             solara.Button(
                 "redraw", on_click=lambda: set_counter(counter + 1), block=True
