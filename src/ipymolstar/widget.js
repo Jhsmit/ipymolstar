@@ -162,6 +162,9 @@ function render({ model, el }) {
     "change:molecule_id": () => {
       viewerInstance.visual.update(getOptions(model), true);
     },
+    "change:custom_data": () => {
+      viewerInstance.visual.update(getOptions(model), true);
+    },
   };
 
   let combinedCallbacks = Object.assign(
