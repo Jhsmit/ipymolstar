@@ -40,8 +40,11 @@ See also the [RCSB citation policies](https://www.rcsb.org/pages/policies) for a
 - create a new release on GitHub, choose as tag 'v' + `__version__`; ie 'v0.0.3'
 - GitHub actions should automatically deploy to PyPi
 
-Windows:
+### Hot reloading
 
+To enable anywidget hot reloading, you need to set th env var `ANYWIDGET_HMR` to 1. 
+
+Windows:
 ```bash
 set ANYWIDGET_HMR=1
 jupyter lab
