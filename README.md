@@ -30,6 +30,7 @@ When using `ipymolstar`, please cite:
 
 David Sehnal, Sebastian Bittrich, Mandar Deshpande, Radka Svobodová, Karel Berka, Václav Bazgier, Sameer Velankar, Stephen K Burley, Jaroslav Koča, Alexander S Rose: Mol* Viewer: modern web app for 3D visualization and analysis of large biomolecular structures, Nucleic Acids Research, 2021; [10.1093/nar/gkab31](https://doi.org/10.1093/nar/gkab314).
 
+See also the [RCSB citation policies](https://www.rcsb.org/pages/policies) for additional citation information.
 
 ### Development
 
