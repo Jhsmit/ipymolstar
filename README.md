@@ -32,8 +32,13 @@ David Sehnal, Sebastian Bittrich, Mandar Deshpande, Radka Svobodová, Karel Berk
 
 See also the [RCSB citation policies](https://www.rcsb.org/pages/policies) for additional citation information.
 
-### Development
+## Development
 
+### Creating a new release
+
+- update `__version__` in `__init__.py`
+- create a new release on GitHub, choose as tag 'v' + `__version__`; ie 'v0.0.3'
+- GitHub actions should automatically deploy to PyPi
 
 Windows:
 
