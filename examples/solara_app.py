@@ -161,13 +161,8 @@ def Page():
         key = f"{counter}_{dark_effective}"
         ProteinView(dark_effective).key(key)
 
-        # solara.Text(str(counter) + str(dark_effective))
-
 
 @solara.component
 def Layout(children):
-    route, routes = solara.use_route()
     dark_effective = solara.lab.use_dark_effective()
-    return solara.AppLayout(
-        children=children, toolbar_dark=dark_effective, color=None
-    )  # if dark_effective else "primary")
+    return solara.AppLayout(children=children, toolbar_dark=dark_effective, color=None)
