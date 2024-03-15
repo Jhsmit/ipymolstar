@@ -2,7 +2,8 @@
 
 ![image](https://github.com/Jhsmit/ipymolstar/assets/7881506/589a94d5-2647-4977-90aa-c886c10cacb9)
 
-Try it in jupyter lab on [JupyterLite](https://github.com/Jhsmit/ipymolstar-demo)
+Try it in jupyter lab on [JupyterLite](https://github.com/Jhsmit/ipymolstar-demo) or play with the solara app example on [ploomber cloud](https://damp-hat-3240.ploomberapp.io/)
+
 
 ## Installation
 
