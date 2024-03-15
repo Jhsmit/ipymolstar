@@ -1,157 +1,173 @@
 import solara
-from ipymolstar import PDBeMolstar
-import random
+from ipymolstar import PDBeMolstar, THEMES
+from dataclasses import dataclass, asdict
+from solara.alias import rw, rv
+import solara.lab
 
 
-molecule_id = solara.reactive("1qyn")
-count = solara.reactive(0)
-spin = solara.reactive(False)
-
-spin_cb = solara.reactive(False)
-theme = solara.reactive("light")
-
-
-def use_trait_observe(has_trait_object, name):
-    # TODO: this hook should go into solara
-    counter = solara.use_reactive(0)
-    counter.get()  # make the main component depend on this counter
-
-    def connect():
-        def update(change):
-            counter.value += 1
-
-        has_trait_object.observe(update, name)
-
-        def cleanup():
-            has_trait_object.unobserve(update, name)
-
-        return cleanup
-
-    solara.use_effect(connect, [])
-    return getattr(has_trait_object, name)
+@dataclass
+class PDBeData:
+    molecule_id: str = "1qyn"
+    custom_data: dict | None = None
+    bg_color: str = "#F7F7F7"
+    spin: bool = False
+    hide_polymer: bool = False
+    hide_water: bool = False
+    hide_heteroatoms: bool = False
+    hide_carbs: bool = False
+    hide_non_standard: bool = False
+    hide_coarse: bool = False
 
 
-def use_dark_effective():
-    return use_trait_observe(solara.lab.theme, "dark_effective")
+data = solara.Reactive(PDBeData())
+visibility_cbs = ["polymer", "water", "heteroatoms", "carbs", "non_standard", "coarse"]
+
+protein_store = ["1QYN", "2PE4"]
+molecule_store = {
+    "Glucose": dict(
+        url="https://pubchem.ncbi.nlm.nih.gov/rest/pug/conformers/000016A100000001/SDF?response_type=save&response_basename=Conformer3D_COMPOUND_CID_5793",
+        format="sdf",
+        binary=False,
+    ),
+    "ATP": dict(
+        url="https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/CID/5957/record/SDF?record_type=3d&response_type=save&response_basename=Conformer3D_COMPOUND_CID_5957",
+        format="sdf",
+        binary=False,
+    ),
+    "Caffeine": dict(
+        url="https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/CID/2519/record/SDF?record_type=3d&response_type=save&response_basename=Conformer3D_COMPOUND_CID_2519",
+        format="sdf",
+        binary=False,
+    ),
+    "Strychnine": dict(
+        url=" https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/CID/441071/record/SDF?record_type=3d&response_type=save&response_basename=Conformer3D_COMPOUND_CID_441071 ",
+        format="sdf",
+        binary=False,
+    ),
+}
 
 
-# def make_molstar():
-#     print("make molstar")
-#     c = PDBeMolstar(molecule_id=molecule_id.value, theme=theme.value)
-#     return c
-
-
-def rand_rgb() -> dict[str, int]:
-    """returns a random rgb color dict"""
-    return {
-        "r": random.randint(0, 255),
-        "g": random.randint(0, 255),
-        "b": random.randint(0, 255),
-    }
-
-
-def gen_color_data():
-    data = []
-    for chain in "ABCD":
-        d = {
-            "start_residue_number": 0,
-            "end_residue_number": 200,
-            "struct_asym_id": chain,
-            "color": rand_rgb(),
-            "focus": False,
-        }
-        data.append(d)
-
-    return data
+@solara.component
+def ProteinView(dark_effective: bool):
+    with solara.Card("Protein view"):
+        theme = "dark" if dark_effective else "light"
+        PDBeMolstar.element(**asdict(data.value), theme=theme)
 
 
 @solara.component
 def Page():
+    counter, set_counter = solara.use_state(0)
+    dark_effective = solara.lab.use_dark_effective()
+    dark_effective_previous = solara.use_previous(dark_effective)
+
+    structure_type = solara.use_reactive("Protein")
+    protein_id = solara.use_reactive(protein_store[0])
+    molecule_key = solara.use_reactive(next(iter(molecule_store.keys())))
+
+    if dark_effective != dark_effective_previous:
+        if dark_effective:
+            data.update(bg_color=THEMES["dark"]["bg_color"])
+        else:
+            data.update(bg_color=THEMES["light"]["bg_color"])
+
+    def update_molecule_data(value: str, name: str):
+        if name == "protein_id":
+            protein_id.set(value)
+        elif name == "molecule_key":
+            molecule_key.set(value)
+        elif name == "structure_type":
+            structure_type.set(value)
+
+        if structure_type.value == "Protein":
+            # note: molecule_id is used to set the protein
+            # seems confusing here because we use custom_data to show molecules
+            data.update(molecule_id=protein_id.value.lower(), custom_data=None)
+        else:
+            data.update(molecule_id="", custom_data=molecule_store[molecule_key.value])
+
     with solara.AppBar():
         solara.lab.ThemeToggle()
 
-    dark_effective = use_dark_effective()
-    theme_value = "dark" if dark_effective else "light"
-    print("theme_value", theme_value)
+    with solara.Columns([4, 8]):
+        with solara.Card("Controls"):
 
-    def make_molstar():
-        print("make molstar")
-        c = PDBeMolstar(
-            molecule_id=molecule_id.value, theme=theme_value, height="400px"
-        )
-        return c
+            def on_value(x, name="structure_type"):
+                update_molecule_data(x, name)
 
-    c = solara.use_memo(make_molstar, dependencies=[molecule_id.value, theme_value])
+            with solara.ToggleButtonsSingle(
+                value=structure_type.value,
+                on_value=on_value,
+                classes=["d-flex", "flex-row"],
+            ):
+                solara.Button(label="Protein", classes=["flex-grow-1"])
+                solara.Button(label="Molecule", classes=["flex-grow-1"])
 
-    def set_spin(value):
-        # doesnt work, triggers rerender instead of setting spin
-        print("value", value)
-        spin.set(value)
+            solara.Div(style="height: 20px")
 
-        c.spin = not c.spin
+            if structure_type.value == "Protein":
 
-    def set_spin_cb(value):
-        # same issue as switch
-        print("cb setter", value)
-        spin_cb.set(value)
-        c.spin = value
+                def on_value(x, name="protein_id"):
+                    update_molecule_data(x, name)
 
-    def set_true(*event):
-        # works
-        c.spin = True
+                solara.Select(
+                    label="PDB id",
+                    value=protein_id.value,
+                    values=protein_store,
+                    on_value=on_value,
+                )
+            else:
 
-    def set_false(*event):
-        # works
-        print("event", event)
-        c.spin = False
+                def on_value(x, name="molecule_key"):
+                    update_molecule_data(x, name)
 
-    def do_color():
-        # works
-        data = gen_color_data()
-        c.color(data, non_selected_color={"r": 0, "g": 87, "b": 0})
+                solara.Select(
+                    label="Molecule",
+                    value=molecule_key.value,
+                    values=list(molecule_store.keys()),
+                    on_value=on_value,
+                )
 
-    def toggle_water():
-        # works
-        c.hide_water = not c.hide_water
+            solara.Checkbox(
+                label="spin",
+                value=data.value.spin,
+                on_value=lambda x: data.update(spin=x),
+            )
 
-    def toggle_spin():
-        c.spin = not c.spin
+            for struc_elem in visibility_cbs:
+                attr = f"hide_{struc_elem}"
 
-    with solara.Card(style="width: 500px; height: 750px;"):
-        solara.InputText(
-            label="molecule id", value=molecule_id.value, on_value=molecule_id.set
-        )
-        solara.display(c)
-        solara.Button(label="increment", on_click=lambda: count.set(count.value + 1))
-        solara.Button(label="set true", on_click=set_true)
-        solara.Button(label="set false", on_click=set_false)
-        solara.Button(label="randcolor", on_click=do_color)
-        solara.Button(label="toggle water", on_click=toggle_water)
-        solara.Button(label="toggle spin", on_click=toggle_spin)
-        solara.Switch(label="spin", value=spin.value, on_value=set_spin)
-        solara.Checkbox(label="spin_cb", value=spin_cb.value, on_value=set_spin_cb)
-        solara.Select(
-            label="set theme",
-            value=theme.value,
-            on_value=theme.set,
-            values=["light", "dark"],
-        )  # works
-        solara.Text(
-            f"molecule_id: {molecule_id.value}, count: {count.value}, spin: {spin.value}, {c.spin}"
-        )
-        solara.Text(f"hide_water: {c.hide_water}")
+                def on_value(x, attr=attr):
+                    data.update(**{attr: x})
+
+                solara.Checkbox(
+                    label=f"hide {struc_elem}",
+                    value=getattr(data.value, attr),
+                    on_value=on_value,
+                )
+
+            btn = solara.Button("background color", block=True)
+            with solara.lab.Menu(activator=btn, close_on_content_click=False):
+                rv.ColorPicker(
+                    v_model=data.value.bg_color,
+                    on_v_model=lambda x: data.update(bg_color=x),
+                )
+
+            solara.Button(
+                "redraw", on_click=lambda: set_counter(counter + 1), block=True
+            )
+
+        # with solara.Card("Protein view"):
+        #     PDBeMolstar.element(**asdict(data.value)).key(f"molstar-{counter}")
+        key = f"{counter}_{dark_effective}"
+        ProteinView(dark_effective).key(key)
+
+        # solara.Text(str(counter) + str(dark_effective))
 
 
-# @solara.component
-# def Page():
-#     # molecule_id, set_molecule_id = solara.use_state("1qyn")
-
-#     with solara.Card(style="width: 500px; height: 750px;"):
-#         solara.InputText(
-#             label="molecule id", value=molecule_id.value, on_value=molecule_id.set
-#         )
-#         # c = PDBeMolstar.element(molecule_id=molecule_id.value)
-#         c = PDBeMolstar(molecule_id=molecule_id.value)
-#         solara.display(c)
-
-#         solara.Text(f"molecule_id: {molecule_id.value}")
+@solara.component
+def Layout(children):
+    route, routes = solara.use_route()
+    dark_effective = solara.lab.use_dark_effective()
+    return solara.AppLayout(
+        children=children, toolbar_dark=dark_effective, color=None
+    )  # if dark_effective else "primary")
