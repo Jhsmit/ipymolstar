@@ -49,7 +49,7 @@ molecule_store = {
 
 @solara.component
 def ProteinView(dark_effective: bool):
-    with solara.Card("Protein view"):
+    with solara.Card("PDBeMol*"):
         theme = "dark" if dark_effective else "light"
         PDBeMolstar.element(**asdict(data.value), theme=theme)
 
