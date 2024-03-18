@@ -168,6 +168,12 @@ function render({ model, el }) {
     "change:bg_color": () => {
       viewerInstance.canvas.setBgColor(toRgb(model.get("bg_color")));
     },
+    "change:_reset": () => {
+      const resetValue = model.get("_reset");
+      if (resetValue !== null) {
+        viewerInstance.visual.reset(resetValue);
+      }
+    },
   };
 
   let combinedCallbacks = Object.assign(
