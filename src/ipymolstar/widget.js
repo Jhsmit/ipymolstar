@@ -183,7 +183,8 @@ function render({ model, el }) {
   );
 
   viewerInstance.events.loadComplete.subscribe(() => {
-    // trigger callabacks which need to
+    // trigger callabacks which need to be called after loading
+    console.log("load complete");
     Object.values(callbacksLoadComplete).forEach((callback) => callback());
   });
 
@@ -210,13 +211,6 @@ function render({ model, el }) {
   //     viewerInstance.visual.update({lighting: model.get('lighting')});
   // });
 
-  // model.on("change:color_data", () => {
-  //     const selectValue = model.get("color_data");
-  //     if (selectValue !== null) {
-  //         viewerInstance.visual.select(selectValue);
-  //     }
-  // });
-
   // model.on("change:_focus", () => {
   //   const focusValue = model.get("_focus");
   //   if (focusValue !== null) {
@@ -236,40 +230,13 @@ function render({ model, el }) {
   // model.on("change:_clear_selection", () => {
   //   viewerInstance.visual.clearSelection(model.get("_args")["number"]);
   // });
-  // model.on("change:_reset", () => {
-  //   const resetValue = model.get("_reset");
-  //   if (resetValue !== null) {
-  //     viewerInstance.visual.reset(resetValue);
-  //   }
   // });
   // model.on("change:_update", () => {
   //   const updateValue = model.get("_update");
   //   if (updateValue !== null) {
   //     viewerInstance.visual.update(updateValue);
   //   }
-  // });
-  //   model.on("change:molecule_id", () => {
-  //     viewerInstance.visual.update(getOptions(model), true);
-  //   });
-  // model.on("change:spin", () => {
-  //   viewerInstance.visual.toggleSpin(model.get("spin"));
-  // });
-  // model.on("change:hide_polymer", () => {
-  //   viewerInstance.visual.visibility({ water: !model.get("hide_polymer") });
-  // });
-  // model.on("change:hide_water", () => {
-  //     viewerInstance.visual.visibility({water:!model.get('hide_water')});
-  // });
-  // model.on("change:hide_heteroatoms", () => {
-  //   viewerInstance.visual.visibility({ water: !model.get("hide_heteroatoms") });
-  // });
-  // model.on("change:hide_carbs", () => {
-  //   viewerInstance.visual.visibility({ water: !model.get("hide_carbs") });
-  // });
-  // model.on("change:hide_non_standard", () => {
-  //   viewerInstance.visual.visibility({
-  //     water: !model.get("hide_non_standard"),
-  //   });
+
   // });
   // model.on("change:hide_coarse", () => {
   //   viewerInstance.visual.visibility({ water: !model.get("hide_coarse") });
