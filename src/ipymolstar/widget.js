@@ -192,6 +192,12 @@ function render({ model, el }) {
     subscribe(model, name, callback)
   );
 
+  document.addEventListener("PDB.molstar.mouseover", (e) => {
+    const eventData = e.eventData;
+    model.set("mouseover_event", eventData);
+    model.save_changes();
+  });
+
   // TODO return unsubscribe
 
   // these require re-render
