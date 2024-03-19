@@ -3,6 +3,7 @@
 ![image](https://github.com/Jhsmit/ipymolstar/assets/7881506/589a94d5-2647-4977-90aa-c886c10cacb9)
 
 Try it in jupyter lab on [JupyterLite](https://github.com/Jhsmit/ipymolstar-demo) or play with the solara app example on [ploomber cloud](https://purple-glade-1760.ploomberapp.io/)
+
 Solara example code can be found [here](https://github.com/Jhsmit/ploomber-solara-ipymolstar)
 
 ## Installation
