@@ -76,10 +76,22 @@ function getHideCanvasControls(model) {
   return hideCanvasControls;
 }
 
+function getCustomData(model) {
+  var customData = model.get("custom_data");
+  
+  if (customData && 'data' in customData) {
+    var url = URL.createObjectURL(new Blob([customData.data]));
+    customData.url = url;
+    delete customData.data;
+  }
+
+  return customData;
+}
+
 function getOptions(model) {
   var options = {
     moleculeId: model.get("molecule_id"),
-    customData: model.get("custom_data"),
+    customData: getCustomData(model),
     assemblyId: model.get("assembly_id"),
     defaultPreset: model.get("default_preset"),
     ligandView: model.get("ligand_view"),
@@ -184,7 +196,6 @@ function render({ model, el }) {
 
   viewerInstance.events.loadComplete.subscribe(() => {
     // trigger callabacks which need to be called after loading
-    console.log("load complete");
     Object.values(callbacksLoadComplete).forEach((callback) => callback());
   });
 
