@@ -21,6 +21,29 @@ view = PDBeMolstar(molecule_id='1qyn', theme='light', hide_water=True)
 view
 ```
 
+Loading local data, hiding the buttons:
+
+```python
+from pathlib import Path 
+fpth = Path().resolve() / 'assets' / '6vsb.bcif'
+custom_data = {
+    'data': fpth.read_bytes(),
+    'format': 'cif',
+    'binary': True,
+    }
+view = PDBeMolstar(
+    custom_data=custom_data, 
+    hide_controls_icon=True, 
+    hide_expand_icon=True, 
+    hide_settings_icon=True, 
+    hide_selection_icon=True, 
+    hide_animation_icon=True,
+    hide_water=True,
+    hide_carbs=True,
+)
+view
+```
+
 See the example notebook for more advanced usage. 
 
 ## Cite
