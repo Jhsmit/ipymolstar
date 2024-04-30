@@ -124,7 +124,13 @@ class PDBeMolstar(anywidget.AnyWidget):
         bg_color = kwargs.pop("bg_color", THEMES[theme]["bg_color"])
         super().__init__(_css=_css, bg_color=bg_color, **kwargs)
 
-    def color(self, data, non_selected_color=None):
+    def color(
+        self,
+        data,
+        non_selected_color=None,
+        keep_colors=False,
+        keep_representations=False,
+    ):
         """
         Alias for PDBE Molstar's `select` method.
 
@@ -132,7 +138,12 @@ class PDBeMolstar(anywidget.AnyWidget):
         details
         """
 
-        self.color_data = {"data": data, "nonSelectedColor": non_selected_color}
+        self.color_data = {
+            "data": data,
+            "nonSelectedColor": non_selected_color,
+            "keepColors": keep_colors,
+            "keepRepresentations": keep_representations,
+        }
         self.color_data = None
 
     def focus(self, data):
