@@ -2,6 +2,7 @@ import pathlib
 
 import anywidget
 import traitlets
+from typing import Optional, List, TypedDict, Any
 
 
 THEMES = {
@@ -14,6 +15,46 @@ THEMES = {
         "css": (pathlib.Path(__file__).parent / "pdbe-dark.css").read_text(),
     },
 }
+
+
+# codeieum translation of QueryParam from
+# https://github.com/molstar/pdbe-molstar/blob/master/src/app/helpers.ts#L180
+class QueryParam(TypedDict, total=False):
+    auth_seq_id: Optional[int]
+    entity_id: Optional[str]
+    auth_asym_id: Optional[str]
+    struct_asym_id: Optional[str]
+    residue_number: Optional[int]
+    start_residue_number: Optional[int]
+    end_residue_number: Optional[int]
+    auth_residue_number: Optional[int]
+    auth_ins_code_id: Optional[str]
+    start_auth_residue_number: Optional[int]
+    start_auth_ins_code_id: Optional[str]
+    end_auth_residue_number: Optional[int]
+    end_auth_ins_code_id: Optional[str]
+    atoms: Optional[List[str]]
+    label_comp_id: Optional[str]
+    color: Optional[Any]
+    sideChain: Optional[bool]
+    representation: Optional[str]
+    representationColor: Optional[Any]
+    focus: Optional[bool]
+    tooltip: Optional[str]
+    start: Optional[Any]
+    end: Optional[Any]
+    atom_id: Optional[List[int]]
+    uniprot_accession: Optional[str]
+    uniprot_residue_number: Optional[int]
+    start_uniprot_residue_number: Optional[int]
+    end_uniprot_residue_number: Optional[int]
+
+
+class ResetParam(TypedDict, total=False):
+    camera: Optional[bool]
+    theme: Optional[bool]
+    highlightColor: Optional[bool]
+    selectColor: Optional[bool]
 
 
 class PDBeMolstar(anywidget.AnyWidget):
@@ -126,11 +167,11 @@ class PDBeMolstar(anywidget.AnyWidget):
 
     def color(
         self,
-        data,
+        data: list[QueryParam],
         non_selected_color=None,
         keep_colors=False,
         keep_representations=False,
-    ):
+    ) -> None:
         """
         Alias for PDBE Molstar's `select` method.
 
@@ -146,11 +187,11 @@ class PDBeMolstar(anywidget.AnyWidget):
         }
         self.color_data = None
 
-    def focus(self, data):
+    def focus(self, data: list[QueryParam]):
         self._focus = data
         self._focus = None
 
-    def highlight(self, data):
+    def highlight(self, data: list[QueryParam]):
         self._highlight = data
         self._highlight = None
 
@@ -169,7 +210,7 @@ class PDBeMolstar(anywidget.AnyWidget):
         self._set_color = data
         self._set_color = None
 
-    def reset(self, data):
+    def reset(self, data: ResetParam):
         self._reset = data
         self._reset = None
 
