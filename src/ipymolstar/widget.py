@@ -41,10 +41,10 @@ class QueryParam(TypedDict, total=False):
     end_auth_ins_code_id: Optional[str]
     atoms: Optional[List[str]]
     label_comp_id: Optional[str]
-    color: Optional[Any]
+    color: Optional[Color]
     sideChain: Optional[bool]
     representation: Optional[str]
-    representationColor: Optional[Any]
+    representationColor: Optional[Color]
     focus: Optional[bool]
     tooltip: Optional[str]
     start: Optional[Any]
@@ -212,9 +212,18 @@ class PDBeMolstar(anywidget.AnyWidget):
         self._args = {"number": structure_number}
         self._clear_selection = not self._clear_selection
 
-    def set_color(self, data):
-        self._set_color = data
-        self._set_color = None
+    # todo make two traits: select_color, hightlight_color
+    def set_color(
+        self, highlight: Optional[Color] = None, select: Optional[Color] = None
+    ):
+        data = {}
+        if highlight is not None:
+            data["highlight"] = highlight
+        if select is not None:
+            data["select"] = select
+        if data:
+            self._set_color = data
+            self._set_color = None
 
     def reset(self, data: ResetParam):
         self._reset = data
