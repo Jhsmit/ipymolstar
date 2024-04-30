@@ -191,6 +191,9 @@ function render({ model, el }) {
         viewerInstance.visual.reset(resetValue);
       }
     },
+    "change:_clear_tooltips": () => {
+      viewerInstance.visual.clearTooltips();
+    }
   };
 
   let combinedCallbacks = Object.assign(

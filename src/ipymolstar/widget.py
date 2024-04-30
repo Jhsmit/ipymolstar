@@ -108,8 +108,9 @@ class PDBeMolstar(anywidget.AnyWidget):
     _highlight = traitlets.Dict(default_value=None, allow_none=True).tag(sync=True)
     _clear_highlight = traitlets.Bool(default_value=False).tag(sync=True)
     color_data = traitlets.Dict(default_value=None, allow_none=True).tag(sync=True)
-    tooltips = traitlets.Dict(default_value=None, allow_none=True).tag(sync=True)
     _clear_selection = traitlets.Bool(default_value=False).tag(sync=True)
+    tooltips = traitlets.Dict(default_value=None, allow_none=True).tag(sync=True)
+    _clear_tooltips = traitlets.Bool(default_value=False).tag(sync=True)
     _set_color = traitlets.Dict(default_value=None, allow_none=True).tag(sync=True)
     _reset = traitlets.Dict(allow_none=True, default_value=None).tag(sync=True)
     _update = traitlets.Dict(allow_none=True, default_value=None).tag(sync=True)
@@ -145,7 +146,11 @@ class PDBeMolstar(anywidget.AnyWidget):
     def clear_highlight(self):
         self._clear_highlight = not self._clear_highlight
 
+    def clear_tooltips(self):
+        self._clear_tooltips = not self._clear_tooltips
+
     def clear_selection(self, structure_number=None):
+        # move payload to the traitlet which triggers the callback
         self._args = {"number": structure_number}
         self._clear_selection = not self._clear_selection
 
