@@ -224,50 +224,6 @@ function render({ model, el }) {
     model.save_changes();
   });
 
-  // TODO return unsubscribe
-
-  // these require re-render
-  // model.on("change:visual_style", () => {
-  //     viewerInstance.visual.update({visualStyle: model.get('visual_style')});
-  //     console.log(model.get('visual_style'));
-  // });
-
-  // model.on("change:lighting", () => {
-  //     viewerInstance.visual.update({lighting: model.get('lighting')});
-  // });
-
-  // model.on("change:_focus", () => {
-  //   const focusValue = model.get("_focus");
-  //   if (focusValue !== null) {
-  //     viewerInstance.visual.focus(focusValue);
-  //   }
-  // });
-  // model.on("change:_highlight", () => {
-  //   const highlightValue = model.get("_highlight");
-  //   if (highlightValue !== null) {
-  //     viewerInstance.visual.highlight(highlightValue);
-  //   }
-  // });
-  // model.on("change:_clear_highlight", () => {
-  //   1;
-  //   viewerInstance.visual.clearHighlight();
-  // });
-  // model.on("change:_clear_selection", () => {
-  //   viewerInstance.visual.clearSelection(model.get("_args")["number"]);
-  // });
-  // });
-  // model.on("change:_update", () => {
-  //   const updateValue = model.get("_update");
-  //   if (updateValue !== null) {
-  //     viewerInstance.visual.update(updateValue);
-  //   }
-
-  // });
-  // model.on("change:hide_coarse", () => {
-  //   viewerInstance.visual.visibility({ water: !model.get("hide_coarse") });
-  // });
-
-  // this could be a loop?
   return () => {
     unsubscribes.forEach((unsubscribe) => unsubscribe());
   };
