@@ -17,6 +17,12 @@ THEMES = {
 }
 
 
+class Color(TypedDict):
+    r: int
+    g: int
+    b: int
+
+
 # codeieum translation of QueryParam from
 # https://github.com/molstar/pdbe-molstar/blob/master/src/app/helpers.ts#L180
 class QueryParam(TypedDict, total=False):
