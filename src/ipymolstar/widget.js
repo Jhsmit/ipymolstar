@@ -167,6 +167,12 @@ function render({ model, el }) {
         viewerInstance.visual.select(selectValue);
       }
     },
+    "change:tooltips": () => {
+      const tooltipValue = model.get("tooltips");
+      if (tooltipValue !== null) {
+        viewerInstance.visual.tooltips(tooltipValue);
+      }
+    },
   };
 
   let otherCallbacks = {
