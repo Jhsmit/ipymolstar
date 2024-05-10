@@ -2,6 +2,7 @@ import pathlib
 
 import anywidget
 import traitlets
+from typing import Optional, List, TypedDict, Any
 
 
 THEMES = {
@@ -14,6 +15,52 @@ THEMES = {
         "css": (pathlib.Path(__file__).parent / "pdbe-dark.css").read_text(),
     },
 }
+
+
+class Color(TypedDict):
+    r: int
+    g: int
+    b: int
+
+
+# codeieum translation of QueryParam from
+# https://github.com/molstar/pdbe-molstar/blob/master/src/app/helpers.ts#L180
+class QueryParam(TypedDict, total=False):
+    auth_seq_id: Optional[int]
+    entity_id: Optional[str]
+    auth_asym_id: Optional[str]
+    struct_asym_id: Optional[str]
+    residue_number: Optional[int]
+    start_residue_number: Optional[int]
+    end_residue_number: Optional[int]
+    auth_residue_number: Optional[int]
+    auth_ins_code_id: Optional[str]
+    start_auth_residue_number: Optional[int]
+    start_auth_ins_code_id: Optional[str]
+    end_auth_residue_number: Optional[int]
+    end_auth_ins_code_id: Optional[str]
+    atoms: Optional[List[str]]
+    label_comp_id: Optional[str]
+    color: Optional[Color]
+    sideChain: Optional[bool]
+    representation: Optional[str]
+    representationColor: Optional[Color]
+    focus: Optional[bool]
+    tooltip: Optional[str]
+    start: Optional[Any]
+    end: Optional[Any]
+    atom_id: Optional[List[int]]
+    uniprot_accession: Optional[str]
+    uniprot_residue_number: Optional[int]
+    start_uniprot_residue_number: Optional[int]
+    end_uniprot_residue_number: Optional[int]
+
+
+class ResetParam(TypedDict, total=False):
+    camera: Optional[bool]
+    theme: Optional[bool]
+    highlightColor: Optional[bool]
+    selectColor: Optional[bool]
 
 
 class PDBeMolstar(anywidget.AnyWidget):
@@ -109,6 +156,8 @@ class PDBeMolstar(anywidget.AnyWidget):
     _clear_highlight = traitlets.Bool(default_value=False).tag(sync=True)
     color_data = traitlets.Dict(default_value=None, allow_none=True).tag(sync=True)
     _clear_selection = traitlets.Bool(default_value=False).tag(sync=True)
+    tooltips = traitlets.Dict(default_value=None, allow_none=True).tag(sync=True)
+    _clear_tooltips = traitlets.Bool(default_value=False).tag(sync=True)
     _set_color = traitlets.Dict(default_value=None, allow_none=True).tag(sync=True)
     _reset = traitlets.Dict(allow_none=True, default_value=None).tag(sync=True)
     _update = traitlets.Dict(allow_none=True, default_value=None).tag(sync=True)
@@ -122,7 +171,13 @@ class PDBeMolstar(anywidget.AnyWidget):
         bg_color = kwargs.pop("bg_color", THEMES[theme]["bg_color"])
         super().__init__(_css=_css, bg_color=bg_color, **kwargs)
 
-    def color(self, data, non_selected_color=None):
+    def color(
+        self,
+        data: list[QueryParam],
+        non_selected_color=None,
+        keep_colors=False,
+        keep_representations=False,
+    ) -> None:
         """
         Alias for PDBE Molstar's `select` method.
 
@@ -130,29 +185,47 @@ class PDBeMolstar(anywidget.AnyWidget):
         details
         """
 
-        self.color_data = {"data": data, "nonSelectedColor": non_selected_color}
+        self.color_data = {
+            "data": data,
+            "nonSelectedColor": non_selected_color,
+            "keepColors": keep_colors,
+            "keepRepresentations": keep_representations,
+        }
         self.color_data = None
 
-    def focus(self, data):
+    def focus(self, data: list[QueryParam]):
         self._focus = data
         self._focus = None
 
-    def highlight(self, data):
+    def highlight(self, data: list[QueryParam]):
         self._highlight = data
         self._highlight = None
 
     def clear_highlight(self):
         self._clear_highlight = not self._clear_highlight
 
+    def clear_tooltips(self):
+        self._clear_tooltips = not self._clear_tooltips
+
     def clear_selection(self, structure_number=None):
+        # move payload to the traitlet which triggers the callback
         self._args = {"number": structure_number}
         self._clear_selection = not self._clear_selection
 
-    def set_color(self, data):
-        self._set_color = data
-        self._set_color = None
+    # todo make two traits: select_color, hightlight_color
+    def set_color(
+        self, highlight: Optional[Color] = None, select: Optional[Color] = None
+    ):
+        data = {}
+        if highlight is not None:
+            data["highlight"] = highlight
+        if select is not None:
+            data["select"] = select
+        if data:
+            self._set_color = data
+            self._set_color = None
 
-    def reset(self, data):
+    def reset(self, data: ResetParam):
         self._reset = data
         self._reset = None
 

@@ -1,5 +1,4 @@
-import * as myModule from "https://www.ebi.ac.uk/pdbe/pdb-component-library/js/pdbe-molstar-plugin-3.1.3.js";
-// import * as myModule from "https://cdn.jsdelivr.net/npm/pdbe-molstar@latest/build/pdbe-molstar-plugin.js"
+import * as myModule from "https://cdn.jsdelivr.net/npm/pdbe-molstar@3.2.0/build/pdbe-molstar-plugin.js"
 
 function standardize_color(str) {
   var ctx = document.createElement("canvas").getContext("2d");
@@ -168,6 +167,12 @@ function render({ model, el }) {
         viewerInstance.visual.select(selectValue);
       }
     },
+    "change:tooltips": () => {
+      const tooltipValue = model.get("tooltips");
+      if (tooltipValue !== null) {
+        viewerInstance.visual.tooltips(tooltipValue);
+      }
+    },
   };
 
   let otherCallbacks = {
@@ -177,6 +182,12 @@ function render({ model, el }) {
     "change:custom_data": () => {
       viewerInstance.visual.update(getOptions(model), true);
     },
+    "change:visual_style": () => {
+      viewerInstance.visual.update(getOptions(model), true);
+    },
+    // "change:lighting": () => {
+    //   viewerInstance.visual.update(getOptions(model), true);
+    // },
     "change:bg_color": () => {
       viewerInstance.canvas.setBgColor(toRgb(model.get("bg_color")));
     },
@@ -186,6 +197,9 @@ function render({ model, el }) {
         viewerInstance.visual.reset(resetValue);
       }
     },
+    "change:_clear_tooltips": () => {
+      viewerInstance.visual.clearTooltips();
+    }
   };
 
   let combinedCallbacks = Object.assign(
@@ -210,50 +224,6 @@ function render({ model, el }) {
     model.save_changes();
   });
 
-  // TODO return unsubscribe
-
-  // these require re-render
-  // model.on("change:visual_style", () => {
-  //     viewerInstance.visual.update({visualStyle: model.get('visual_style')});
-  //     console.log(model.get('visual_style'));
-  // });
-
-  // model.on("change:lighting", () => {
-  //     viewerInstance.visual.update({lighting: model.get('lighting')});
-  // });
-
-  // model.on("change:_focus", () => {
-  //   const focusValue = model.get("_focus");
-  //   if (focusValue !== null) {
-  //     viewerInstance.visual.focus(focusValue);
-  //   }
-  // });
-  // model.on("change:_highlight", () => {
-  //   const highlightValue = model.get("_highlight");
-  //   if (highlightValue !== null) {
-  //     viewerInstance.visual.highlight(highlightValue);
-  //   }
-  // });
-  // model.on("change:_clear_highlight", () => {
-  //   1;
-  //   viewerInstance.visual.clearHighlight();
-  // });
-  // model.on("change:_clear_selection", () => {
-  //   viewerInstance.visual.clearSelection(model.get("_args")["number"]);
-  // });
-  // });
-  // model.on("change:_update", () => {
-  //   const updateValue = model.get("_update");
-  //   if (updateValue !== null) {
-  //     viewerInstance.visual.update(updateValue);
-  //   }
-
-  // });
-  // model.on("change:hide_coarse", () => {
-  //   viewerInstance.visual.visibility({ water: !model.get("hide_coarse") });
-  // });
-
-  // this could be a loop?
   return () => {
     unsubscribes.forEach((unsubscribe) => unsubscribe());
   };
