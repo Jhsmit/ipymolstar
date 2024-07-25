@@ -56,7 +56,7 @@ Solara example code can be found [here](https://github.com/Jhsmit/ploomber-solar
 
 ## Cite
 
-`ipymolstar` uses `anywidget` to create a widget based on the [PDBe integration](https://github.com/molstar/pdbe-molstar) of [Mol*](https://molstar.org/).
+`ipymolstar` uses [anywidget](https://github.com/manzt/anywidget) to create a widget based on the [PDBe integration](https://github.com/molstar/pdbe-molstar) of [Mol*](https://molstar.org/).
 
 When using `ipymolstar`, please cite:
 
