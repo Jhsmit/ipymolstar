@@ -9,14 +9,14 @@ import param
 from panel.custom import AnyWidgetComponent
 
 
-class PDBeMolstarPane(AnyWidgetComponent):
+class PDBeMolstar(AnyWidgetComponent):
     _esm = pathlib.Path(__file__).parent / "widget.js"
     _stylesheets = [str(pathlib.Path(__file__).parent / "pdbe-light.css")]
     molecule_id = param.String(default="1qyn")
 
 
 if pn.state.served:
-    molstar = PDBeMolstarPane()
+    molstar = PDBeMolstar()
     parameters = pn.Param(molstar, parameters=["molecule_id"])
     settings = pn.Column(parameters)
     pn.FlexBox(settings, molstar).servable()
