@@ -1,9 +1,8 @@
 import pathlib
+from typing import Any, List, Optional, TypedDict
 
 import anywidget
 import traitlets
-from typing import Optional, List, TypedDict, Any
-
 
 THEMES = {
     "light": {
