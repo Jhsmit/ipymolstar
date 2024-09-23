@@ -137,7 +137,7 @@ class PDBeMolstar(anywidget.AnyWidget):
         default_value="residue",
     ).tag(sync=True)
     subscribe_events = traitlets.Bool(False).tag(sync=True)
-    hide_controls = traitlets.Bool(False).tag(sync=True)
+    hide_controls = traitlets.Bool(True).tag(sync=True)
     hide_controls_icon = traitlets.Bool(False).tag(sync=True)
     hide_expand_icon = traitlets.Bool(False).tag(sync=True)
     hide_settings_icon = traitlets.Bool(False).tag(sync=True)
