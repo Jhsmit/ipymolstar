@@ -1,4 +1,4 @@
-import * as myModule from "https://cdn.jsdelivr.net/npm/pdbe-molstar@3.2.0/build/pdbe-molstar-plugin.js"
+import "https://cdn.jsdelivr.net/npm/pdbe-molstar@3.2.0/build/pdbe-molstar-plugin.js";
 
 function standardize_color(str) {
   var ctx = document.createElement("canvas").getContext("2d");
@@ -134,6 +134,7 @@ function render({ model, el }) {
   viewerContainer.id = "viewer_container";
 
   viewerContainer.style.height = model.get("height");
+  viewerContainer.style.width = model.get("width");
   var viewerInstance = new window.PDBeMolstarPlugin();
   viewerInstance.render(viewerContainer, getOptions(model)); //.then(() => {
   el.appendChild(viewerContainer);
