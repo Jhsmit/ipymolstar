@@ -22,22 +22,21 @@ class PDBeMolstar(AnyWidgetComponent):
     molecule_id = param.String()
     custom_data = param.Dict(default=None, allow_None=True)
     assembly_id = param.String(default="")
-    default_preset = param.ObjectSelector(
+    default_preset = param.Selector(
         default="default", objects=["default", "unitcell", "all-models", "supercell"]
     )
     ligand_view = param.Dict(default=None)
     alphafold_view = param.Boolean(default=False)
     superposition = param.Boolean(default=False)
     superposition_params = param.Dict(default=None)
-    visual_style = param.ObjectSelector(
+    visual_style = param.Selector(
         default=None,
         objects=[
             "cartoon",
             "ball-and-stick",
             "carbohydrate",
             "ellipsoid",
-            "gaussian-surface",
-            "molecular-surface",
+            "gaussian-surface" "molecular-surface",
             "point",
             "putty",
             "spacefill",
@@ -54,17 +53,17 @@ class PDBeMolstar(AnyWidgetComponent):
     bg_color = param.String(default="")
     highlight_color = param.String(default="#FF6699")
     select_color = param.String(default="#33FF19")
-    lighting = param.ObjectSelector(
+    lighting = param.Selector(
         default=None, objects=["flat", "matte", "glossy", "metallic", "plastic"]
     )
     validation_annotation = param.Boolean(default=False)
     domain_annotation = param.Boolean(default=False)
     symmetry_annotation = param.Boolean(default=False)
     pdbe_url = param.String(default="https://www.ebi.ac.uk/pdbe/")
-    encoding = param.ObjectSelector(default="bcif", objects=["bcif", "cif"])
+    encoding = param.Selector(default="bcif", objects=["bcif", "cif"])
     low_precision_coords = param.Boolean(default=False)
     select_interaction = param.Boolean(default=True)
-    granularity = param.ObjectSelector(
+    granularity = param.Selector(
         default="residue",
         objects=[
             "element",
