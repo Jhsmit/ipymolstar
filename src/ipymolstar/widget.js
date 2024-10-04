@@ -135,6 +135,10 @@ function render({ model, el }) {
 
   viewerContainer.style.height = model.get("height");
   viewerContainer.style.width = model.get("width");
+
+  // Make the container responsive
+  viewerContainer.style.maxWidth = "100%";
+  viewerContainer.style.boxSizing = "border-box";
   var viewerInstance = new window.PDBeMolstarPlugin();
   viewerInstance.render(viewerContainer, getOptions(model)); //.then(() => {
   el.appendChild(viewerContainer);
