@@ -1,9 +1,8 @@
 import pathlib
+from typing import Any, List, Optional, TypedDict
 
 import anywidget
 import traitlets
-from typing import Optional, List, TypedDict, Any
-
 
 THEMES = {
     "light": {
@@ -67,7 +66,7 @@ class PDBeMolstar(anywidget.AnyWidget):
     _esm = pathlib.Path(__file__).parent / "widget.js"
     _css = pathlib.Path(__file__).parent / "pdbe-light.css"
 
-    # width = traitlets.Unicode("100%").tag(sync=True)
+    width = traitlets.Unicode("100%").tag(sync=True)
     height = traitlets.Unicode("500px").tag(sync=True)
 
     molecule_id = traitlets.Unicode().tag(sync=True)
@@ -137,7 +136,7 @@ class PDBeMolstar(anywidget.AnyWidget):
         default_value="residue",
     ).tag(sync=True)
     subscribe_events = traitlets.Bool(False).tag(sync=True)
-    hide_controls = traitlets.Bool(False).tag(sync=True)
+    hide_controls = traitlets.Bool(True).tag(sync=True)
     hide_controls_icon = traitlets.Bool(False).tag(sync=True)
     hide_expand_icon = traitlets.Bool(False).tag(sync=True)
     hide_settings_icon = traitlets.Bool(False).tag(sync=True)
