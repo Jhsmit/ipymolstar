@@ -88,7 +88,7 @@ scatter = (
     alt.Chart(data)
     .mark_circle(interpolate="basis", size=200)
     .encode(
-        x="residue:Q",
+        x=alt.X("residue:Q", title="Residue Number"),
         y=alt.Y(
             "deltaG:Q",
             title="ΔG (kJ/mol)",
@@ -112,11 +112,6 @@ selectors = (
     .add_params(nearest)
 )
 
-# Draw points on the line, and highlight based on selection
-points = scatter.mark_point().encode(
-    opacity=alt.condition(nearest, alt.value(1), alt.value(0))
-)
-
 # Draw a rule at the location of the selection
 rule = (
     alt.Chart(data)
@@ -134,7 +129,7 @@ vline = (
 
 # Put the five layers into a chart and bind the data
 chart = (
-    alt.layer(scatter, vline, selectors, points, rule).properties(
+    alt.layer(scatter, vline, selectors, rule).properties(
         width="container",
         height=480,  # autosize height?
     )
