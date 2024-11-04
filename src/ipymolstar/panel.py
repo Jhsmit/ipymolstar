@@ -94,7 +94,7 @@ class PDBeMolstar(AnyWidgetComponent):
 
     spin = param.Boolean(default=False)
     _focus = param.List(default=None)
-    _highlight = param.Dict(default=None)
+    highlight = param.Dict(default=None)
     _clear_highlight = param.Boolean(default=False)
     color_data = param.Dict(default=None)
     _clear_selection = param.Boolean(default=False)
@@ -105,6 +105,7 @@ class PDBeMolstar(AnyWidgetComponent):
     _update = param.Dict(default=None)
     _args = param.Dict(default={})
     mouseover_event = param.Dict(default={})
+    mouseout_event = param.Boolean(default=False)
 
     def __init__(self, theme="light", **params):
         _stylesheets = [THEMES[theme]["css"]]
@@ -138,10 +139,6 @@ class PDBeMolstar(AnyWidgetComponent):
     def focus(self, data: list[QueryParam]):
         self._focus = data
         self._focus = None
-
-    def highlight(self, data: list[QueryParam]):
-        self._highlight = data
-        self._highlight = None
 
     def clear_highlight(self):
         self._clear_highlight = not self._clear_highlight

@@ -151,7 +151,7 @@ class PDBeMolstar(anywidget.AnyWidget):
 
     spin = traitlets.Bool(False).tag(sync=True)
     _focus = traitlets.List(default_value=None, allow_none=True).tag(sync=True)
-    _highlight = traitlets.Dict(default_value=None, allow_none=True).tag(sync=True)
+    highlight = traitlets.Dict(default_value=None, allow_none=True).tag(sync=True)
     _clear_highlight = traitlets.Bool(default_value=False).tag(sync=True)
     color_data = traitlets.Dict(default_value=None, allow_none=True).tag(sync=True)
     _clear_selection = traitlets.Bool(default_value=False).tag(sync=True)
@@ -164,6 +164,7 @@ class PDBeMolstar(anywidget.AnyWidget):
     _args = traitlets.Dict().tag(sync=True)
 
     mouseover_event = traitlets.Dict().tag(sync=True)
+    mouseout_event = traitlets.Bool().tag(sync=True)
 
     def __init__(self, theme="light", **kwargs):
         _css = THEMES[theme]["css"]
@@ -195,10 +196,6 @@ class PDBeMolstar(anywidget.AnyWidget):
     def focus(self, data: list[QueryParam]):
         self._focus = data
         self._focus = None
-
-    def highlight(self, data: list[QueryParam]):
-        self._highlight = data
-        self._highlight = None
 
     def clear_highlight(self):
         self._clear_highlight = not self._clear_highlight
