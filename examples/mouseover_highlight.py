@@ -123,7 +123,9 @@ rule = (
 )
 
 vline = (
-    alt.Chart(pd.DataFrame({"x": [0]})).mark_rule(color="red", size=2).encode(x="x:Q")
+    alt.Chart(pd.DataFrame({"x": [0]}))
+    .mark_rule(color=HIGHLIGHT_COLOR, size=2)
+    .encode(x="x:Q")
 )
 
 
