@@ -100,7 +100,6 @@ function getOptions(model) {
     visualStyle: model.get("visual_style"),
     loadMaps: model.get("load_maps"),
     bgColor: toRgb(model.get("bg_color")),
-    highlightColor: toRgb(model.get("highlight_color")),
     selectColor: toRgb(model.get("select_color")),
     lighting: model.get("lighting"),
     validationAnnotation: model.get("validation_annotation"),
@@ -172,6 +171,18 @@ function render({ model, el }) {
         viewerInstance.visual.select(selectValue);
       }
     },
+    "change:highlight": () => {
+      const highlightValue = model.get("highlight");
+      if (highlightValue !== null) {
+      viewerInstance.visual.highlight(highlightValue);
+      }
+    },
+    "change:highlight_color": () => {
+      const highlightColorValue = model.get("highlight_color");      
+      if (highlightColorValue !== null) {
+        viewerInstance.visual.setColor({ highlight: highlightColorValue });
+      }
+    },
     "change:tooltips": () => {
       const tooltipValue = model.get("tooltips");
       if (tooltipValue !== null) {
@@ -226,6 +237,11 @@ function render({ model, el }) {
   document.addEventListener("PDB.molstar.mouseover", (e) => {
     const eventData = e.eventData;
     model.set("mouseover_event", eventData);
+    model.save_changes();
+  });
+
+  document.addEventListener("PDB.molstar.mouseout", (e) => {
+    model.set("mouseout_event", !model.get("mouseout_event") );
     model.save_changes();
   });
 
