@@ -167,7 +167,7 @@ def Page():
     # residue number to highlight in protein view
     highlight_number = solara.use_reactive(None)
     with solara.AppBar():
-        solara.AppBarTitle("altair/ipymolstar bidirectional hightlight")
+        solara.AppBarTitle("altair/ipymolstar bidirectional highlight")
     solara.Style(
         """
         .vega-embed {
