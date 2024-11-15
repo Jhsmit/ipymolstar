@@ -181,21 +181,20 @@ def Page():
                 solara.InputText(label="Label", value=label)
                 solara.InputText(label="Unit", value=unit)
 
-            ipywidgets.ColorPicker.element(  # type: ignore
-                description="Highlight Color",
-                concise=True,
-                value=highlight_color.value,
-                on_value=highlight_color.set,
-            )
-
-            ipywidgets.ColorPicker.element(  # type: ignore
-                description="Missing data color",
-                concise=True,
-                value=missing_data_color.value,
-                on_value=missing_data_color.set,
-            )
-
-            solara.Text(highlight_color.value)
+            solara.Text("Colors")
+            with solara.Row(gap="10px", justify="space-around"):
+                btn = solara.Button("Highlight", color=highlight_color.value)
+                with solara.lab.Menu(activator=btn, close_on_content_click=False):
+                    solara.v.ColorPicker(
+                        v_model=highlight_color.value,
+                        on_v_model=highlight_color.set,
+                    )
+                btn = solara.Button("Missing data", color=missing_data_color.value)
+                with solara.lab.Menu(activator=btn, close_on_content_click=False):
+                    solara.v.ColorPicker(
+                        v_model=missing_data_color.value,
+                        on_v_model=missing_data_color.set,
+                    )
 
             with solara.Row():
                 # solara.v.ColorPicker()
