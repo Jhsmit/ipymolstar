@@ -84,11 +84,14 @@ class AxisProperties:
 def make_chart(
     data: pd.DataFrame, colors: ColorTransform, axis_properties: AxisProperties
 ) -> alt.LayerChart:
-    pad = (colors.vmax - colors.vmin) * 0.05
+    ypad = (colors.vmax - colors.vmin) * 0.05
+    xmin, xmax = data["residue_number"].min(), data["residue_number"].max()
+    xpad = (xmax - xmin) * 0.05
+    xscale = alt.Scale(domain=(xmin - xpad, xmax + xpad))
     if axis_properties.autoscale_y:
-        scale = alt.Scale()
+        y_scale = alt.Scale()
     else:
-        scale = alt.Scale(domain=(colors.vmin - pad, colors.vmax + pad))
+        y_scale = alt.Scale(domain=(colors.vmin - ypad, colors.vmax + ypad))
 
     # TODO zoom resets after highlight
     zoom_x = alt.selection_interval(
@@ -101,11 +104,11 @@ def make_chart(
         alt.Chart(data)
         .mark_circle(interpolate="basis", size=200)
         .encode(
-            x=alt.X("residue_number:Q", title="Residue Number"),
+            x=alt.X("residue_number:Q", title="Residue Number", scale=xscale),
             y=alt.Y(
                 "value:Q",
                 title=axis_properties.title,
-                scale=scale,
+                scale=y_scale,
             ),
             color=alt.Color(
                 "value:Q", scale=colors.altair_scale, title=axis_properties.title

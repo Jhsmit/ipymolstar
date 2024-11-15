@@ -16,8 +16,8 @@ HIGHLIGHT_COLOR = "#e933f8"
 MISSING_DATA_COLOR = "#8c8c8c"
 CMAP_OPTIONS = list(Catalog().namespaced_keys())
 
-# TODO color pickers formatting
-
+pth = Path(__file__).parent
+# pth = Path() # pycafé
 
 # VMIN_DEFAULT =
 
