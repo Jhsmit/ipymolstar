@@ -1,0 +1,7 @@
+solara
+ipymolstar
+pandas
+altair
+anywidget
+cmap
+pyperclip
