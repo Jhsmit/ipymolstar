@@ -113,8 +113,12 @@ def Page():
 
     png_bytes = cmap._repr_png_(height=24)
 
-    def on_file(value: solara.components.file_drop.FileInfo):
-        df = pd.read_csv(value["file_obj"])
+    def on_file():
+        try:
+            df = pd.read_csv(pth / "color_data.csv")
+        except Exception as e:
+            warning_text.set(str(e))
+            return
         if len(df.columns) < 2:
             warning_text.set(f"Expected at least 2 columns, got {len(df.columns)}")
             data.set(pd.DataFrame())
@@ -157,9 +161,11 @@ def Page():
         with solara.Card("Settings"):
             solara.InputText(label="Title", value=title)
             solara.InputText(label="PDB ID", value=pdb_id)
-            solara.FileDrop(
-                label="Drop .csv file with residue/color data", on_file=on_file
-            )
+            with solara.Tooltip("Load the data from `color_data.csv`."):
+                solara.Button("Load Data", on_click=on_file, block=True)
+            # solara.FileDrop(
+            #     label="Drop .csv file with residue/color data", on_file=on_file
+            # )
 
             if warning_text.value:
                 solara.Warning(warning_text.value)
