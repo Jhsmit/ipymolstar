@@ -52,7 +52,7 @@ class ColorTransform:
     @property
     def altair_scale(self) -> alt.Scale:
         domain = np.linspace(self.vmin, self.vmax, 256, endpoint=True)
-        scale = alt.Scale(domain=list(domain), range=self.cmap.to_altair())
+        scale = alt.Scale(domain=list(domain), range=self.cmap.to_altair(), clamp=True)
         return scale
 
     @classmethod
@@ -137,7 +137,7 @@ def make_chart(
     # Draw a rule at the location of the selection
     rule = (
         alt.Chart(data)
-        .mark_rule(color="gray", size=2)
+        .mark_rule(color=colors.highlight_color, size=2)
         .encode(
             x="residue_number:Q",
         )
