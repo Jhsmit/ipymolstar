@@ -138,6 +138,7 @@ function render({ model, el }) {
   // Make the container responsive
   viewerContainer.style.maxWidth = "100%";
   viewerContainer.style.boxSizing = "border-box";
+
   var viewerInstance = new window.PDBeMolstarPlugin();
   viewerInstance.render(viewerContainer, getOptions(model)); //.then(() => {
   el.appendChild(viewerContainer);
@@ -201,9 +202,9 @@ function render({ model, el }) {
     "change:visual_style": () => {
       viewerInstance.visual.update(getOptions(model), true);
     },
-    // "change:lighting": () => {
-    //   viewerInstance.visual.update(getOptions(model), true);
-    // },
+    "change:expanded": () => {
+      viewerInstance.canvas.toggleExpanded(model.get("expanded"));
+    },
     "change:bg_color": () => {
       viewerInstance.canvas.setBgColor(toRgb(model.get("bg_color")));
     },
