@@ -95,8 +95,8 @@ def Page():
         )
 
     with solara.Columns():
-        with solara.Card(f"Protein: {molecule_id.value}", style={"width": "500px"}):
-            PDBeMolstar.element(
+        with solara.Card(f"Protein: {molecule_id.value}"):
+            PDBeMolstar.element(  # type: ignore
                 molecule_id=molecule_id.value.lower(),
                 hide_controls_icon=True,
                 hide_expand_icon=True,
@@ -107,8 +107,8 @@ def Page():
                 on_click_event=on_click,
             )
 
-        with solara.Card(f"Amino Acid: {amino_acid.value}", style={"width": "500px"}):
-            PDBeMolstar.element(
+        with solara.Card(f"Amino Acid: {amino_acid.value}"):
+            PDBeMolstar.element(  # type: ignore
                 molecule_id="",
                 custom_data=custom_data.value,
                 hide_controls_icon=True,
