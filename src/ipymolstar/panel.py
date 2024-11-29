@@ -104,8 +104,11 @@ class PDBeMolstar(AnyWidgetComponent):
     _reset = param.Dict(default=None)
     _update = param.Dict(default=None)
     _args = param.Dict(default={})
+
     mouseover_event = param.Dict(default={})
     mouseout_event = param.Boolean(default=False)
+    click_event = param.Dict(default={})
+    click_focus = param.Boolean(default=True)
 
     def __init__(self, theme="light", **params):
         _stylesheets = [THEMES[theme]["css"]]

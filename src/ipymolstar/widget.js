@@ -87,6 +87,14 @@ function getCustomData(model) {
   return customData;
 }
 
+const EmptyFocusBindings = {
+  clickCenterFocus: { triggers: [], action: '', description: '' },
+  clickCenterFocusSelectMode: { triggers: [], action: '', description: '' },
+  clickResetCameraOnEmpty: { triggers: [], action: '', description: '' },
+  clickResetCameraOnEmptySelectMode: { triggers: [], action: '', description: '' }
+};
+
+
 function getOptions(model) {
   var options = {
     moleculeId: model.get("molecule_id"),
@@ -108,6 +116,7 @@ function getOptions(model) {
     encoding: model.get("encoding"),
     lowPrecisionCoords: model.get("low_precision_coords"),
     selectInteraction: model.get("select_interaction"),
+    // selectBindings: EmptySelectBindings,
     granularity: model.get("granularity"),
     subscribeEvents: model.get("subscribe_events"),
     hideControls: model.get("hide_controls"),
@@ -119,6 +128,10 @@ function getOptions(model) {
     landscape: model.get("landscape"),
     reactive: model.get("reactive"),
   };
+
+  if (model.get('click_focus') == false) {
+      options.focusBindings = EmptyFocusBindings;
+  }
 
   return options;
 }
@@ -243,6 +256,12 @@ function render({ model, el }) {
 
   document.addEventListener("PDB.molstar.mouseout", (e) => {
     model.set("mouseout_event", !model.get("mouseout_event") );
+    model.save_changes();
+  });
+
+  document.addEventListener("PDB.molstar.click", (e) => {
+    const eventData = e.eventData;
+    model.set("click_event", eventData);
     model.save_changes();
   });
 
