@@ -165,6 +165,8 @@ class PDBeMolstar(anywidget.AnyWidget):
 
     mouseover_event = traitlets.Dict().tag(sync=True)
     mouseout_event = traitlets.Bool().tag(sync=True)
+    click_event = traitlets.Dict().tag(sync=True)
+    click_focus = traitlets.Bool(True).tag(sync=True)
 
     def __init__(self, theme="light", **kwargs):
         _css = THEMES[theme]["css"]
