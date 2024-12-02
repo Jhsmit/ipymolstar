@@ -9,7 +9,7 @@ Give `ipymolstar` a spin without even installing python!
 
  - Try it in jupyter lab via [JupyterLite](https://github.com/Jhsmit/ipymolstar-demo) 🌍🚀
  - Explore the solara ☀️ [demo application](https://github.com/Jhsmit/ploomber-solara-ipymolstar) on [Ploomber-cloud](https://hidden-resonance-5816.ploomberapp.io) ⛅
- - Grab a cupy and play with th [solara](https://app.py.cafe/jhsmit/ipymolstar-solara), [pyshiny](https://py.cafe/jhsmit/ipymolstar-shiny) or [panel](https://app.py.cafe/jhsmit/ipymolstar-panel) live demo's on PyCafé ☕
+ - Grab a cup and play with th [solara](https://app.py.cafe/jhsmit/ipymolstar-solara), [pyshiny](https://py.cafe/jhsmit/ipymolstar-shiny) or [panel](https://app.py.cafe/jhsmit/ipymolstar-panel) live demo's on PyCafé ☕
   - Upload your Alphafold3 .zip result and view plddt or chain colors in the `solarafold` result viewer on [huggingface](https://huggingface.co/spaces/Jhsmit/solarafold) 🤗
 
 
