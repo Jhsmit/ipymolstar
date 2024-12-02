@@ -4,8 +4,11 @@ build-backend = "hatchling.build"
 
 [project]
 name = "ipymolstar"
+license = {file = "LICENSE"}
 dependencies = ["anywidget"]
 readme = "README.md"
+description = "PDBeMolstar as anywidget"
+keywords = ["molstar", "anywidget"]
 dynamic = ['version']
 
 [tool.hatch.version]
