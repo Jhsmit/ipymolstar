@@ -1,4 +1,4 @@
-import "https://cdn.jsdelivr.net/npm/pdbe-molstar@3.2.0/build/pdbe-molstar-plugin.js";
+import "https://cdn.jsdelivr.net/npm/pdbe-molstar@3.3.2/build/pdbe-molstar-plugin.js";
 
 function standardize_color(str) {
   var ctx = document.createElement("canvas").getContext("2d");
