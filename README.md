@@ -19,7 +19,7 @@ Give `ipymolstar` a spin without even installing python!
 pip install ipymolstar
 ```
 > [!WARNING]  
-> Make sure you install this in environment that contains your installation of Jupyter. If you have installed Jupyter in a different environment from your project (requiring you to use a named, non-default kernel), you will have to install this both in that environment and in your project.
+> Make sure you install ipymolstar in an environment that contains your installation of Jupyter. If you have installed Jupyter in a different environment from your project (requiring you to use a named, non-default kernel), you will have to install ipymolstar (or only anywidget) in your Jupyter environment as well.
 
 
 ## Use
