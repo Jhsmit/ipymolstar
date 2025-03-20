@@ -18,6 +18,8 @@ Give `ipymolstar` a spin without even installing python!
 ```sh
 pip install ipymolstar
 ```
+> [!WARNING]  
+> Make sure you install this in environment that contains your installation of Jupyter. If you have installed Jupyter in a different environment from your project (requiring you to use a named, non-default kernel), you will have to install this both in that environment and in your project.
 
 
 ## Use
