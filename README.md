@@ -13,6 +13,14 @@ Give `ipymolstar` a spin without even installing python!
   - Upload your Alphafold3 .zip result and view plddt or chain colors in the `solarafold` result viewer on [huggingface](https://huggingface.co/spaces/Jhsmit/solarafold) 🤗
 
 
+## Preview
+
+You can run a quick preview of `ipymolstar` in a notebook with [juv](https://github.com/manzt/juv):
+    
+```sh
+juv run example.ipynb
+```
+
 ## Installation
 
 ```sh
