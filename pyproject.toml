@@ -14,11 +14,10 @@ dynamic = ['version']
 [tool.hatch.version]
 path = "src/ipymolstar/__init__.py"
 
-
 [tool.hatch.build]
 only-packages = true
 artifacts = ["src/ipymolstar/static/*"]
+exclude = ["**/.venv*"]
 
-# automatically add the dev feature to the default env (e.g., hatch shell)
-[tool.hatch.envs.default]
-features = ["dev"]
+[tool.hatch.build.targets.wheel]
+include = ["ipymolstar/static/**"]
