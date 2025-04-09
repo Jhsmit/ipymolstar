@@ -1,0 +1,36 @@
+name: Test App Packaging
+
+on: [push]
+
+jobs:
+  test-packaging:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v3
+
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.10'
+
+    - name: Install hatch
+      run: pip install hatch
+
+    - name: Build project
+      run: hatch build
+
+    - name: Install uv
+      run: pip install uv
+
+    - name: Create and activate venv, install package
+      run: | 
+        uv venv
+        source .venv/bin/activate
+        uv pip install dist/*.tar.gz
+  
+    - name: Run tests
+      run: |
+        source .venv/bin/activate
+        uv pip install pytest
+        pytest tests
+        
