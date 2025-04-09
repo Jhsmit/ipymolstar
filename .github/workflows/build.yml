@@ -26,11 +26,9 @@ jobs:
       run: | 
         uv venv
         source .venv/bin/activate
-        uv pip install dist/*.tar.gz
-  
-    - name: Run tests
-      run: |
-        source .venv/bin/activate
         uv pip install pytest molviewspec
         pytest tests
+        uv pip install dist/*.tar.gz
+
+
         
