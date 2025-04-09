@@ -1,0 +1,12 @@
+{
+	"scripts": {
+		"dev": "npm run build -- --sourcemap=inline --watch",
+		"build": "esbuild js/molviewspec.js --minify --format=esm --bundle --outdir=src/ipymolstar/static"
+	},
+	"dependencies": {
+		"molstar": "^4.12.1"
+	},
+	"devDependencies": {
+		"esbuild": "^0.25.1"
+	}
+}

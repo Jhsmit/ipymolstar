@@ -5,3 +5,7 @@ dist
 # Python
 __pycache__
 .ipynb_checkpoints
+
+dev/
+_pdb/
+src/ipymolstar/static/molviewspec.js

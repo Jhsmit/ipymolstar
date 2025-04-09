@@ -4,7 +4,7 @@ build-backend = "hatchling.build"
 
 [project]
 name = "ipymolstar"
-license = {file = "LICENSE"}
+license = { file = "LICENSE" }
 dependencies = ["anywidget"]
 readme = "README.md"
 description = "PDBeMolstar as anywidget"
@@ -14,16 +14,11 @@ dynamic = ['version']
 [tool.hatch.version]
 path = "src/ipymolstar/__init__.py"
 
-[project.optional-dependencies]
-dev = ["watchfiles", "jupyterlab"]
+
+[tool.hatch.build]
+only-packages = true
+artifacts = ["src/ipymolstar/static/*"]
 
 # automatically add the dev feature to the default env (e.g., hatch shell)
 [tool.hatch.envs.default]
 features = ["dev"]
-
-
-[tool.hatch.build]
-only-packages = true
-artifacts = ["src/ipymolstar/*"]
-
-

@@ -7,11 +7,13 @@ import traitlets
 THEMES = {
     "light": {
         "bg_color": "#F7F7F7",
-        "css": (pathlib.Path(__file__).parent / "pdbe-light.css").read_text(),
+        "css": (
+            pathlib.Path(__file__).parent / "static" / "pdbe-light.css"
+        ).read_text(),
     },
     "dark": {
         "bg_color": "#111111",
-        "css": (pathlib.Path(__file__).parent / "pdbe-dark.css").read_text(),
+        "css": (pathlib.Path(__file__).parent / "static" / "pdbe-dark.css").read_text(),
     },
 }
 
@@ -63,8 +65,8 @@ class ResetParam(TypedDict, total=False):
 
 
 class PDBeMolstar(anywidget.AnyWidget):
-    _esm = pathlib.Path(__file__).parent / "widget.js"
-    _css = pathlib.Path(__file__).parent / "pdbe-light.css"
+    _esm = pathlib.Path(__file__).parent / "static" / "pdbemolstar.js"
+    _css = pathlib.Path(__file__).parent / "static" / "pdbe-light.css"
 
     width = traitlets.Unicode("100%").tag(sync=True)
     height = traitlets.Unicode("500px").tag(sync=True)

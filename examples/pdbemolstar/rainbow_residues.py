@@ -1,16 +1,11 @@
-import statistics
-from dataclasses import asdict, dataclass
-from io import StringIO
 from pathlib import Path
 
-import requests
 import solara
 import solara.lab
-from Bio.PDB import PDBParser, Residue, Structure
-from ipymolstar import THEMES, PDBeMolstar
+from Bio.PDB import PDBParser, Structure
+from ipymolstar import PDBeMolstar
 from matplotlib import colormaps
 from matplotlib.colors import Normalize
-from solara.alias import rv
 
 AMINO_ACIDS = [
     "ALA",
@@ -85,7 +80,7 @@ def color_residues(
 
 @solara.component
 def Page():
-    phase = solara.use_reactive(0)
+    phase = solara.use_reactive(0.0)
     color_data = color_residues(structure, auth=True, phase=phase.value)
     with solara.Card():
         PDBeMolstar.element(
