@@ -31,5 +31,5 @@ jobs:
       run: |
           uv pip install pytest molviewspec
           uv pip install dist/*.tar.gz
-          pytest tests  
+          python -m pytest tests
           
