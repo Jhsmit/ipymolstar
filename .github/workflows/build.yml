@@ -27,9 +27,9 @@ jobs:
         uv venv
         source .venv/bin/activate
         echo PATH=$PATH >> $GITHUB_ENV
-    - name: Install dependencies and run tests
+        uv pip install pytest molviewspec
+        uv pip install dist/*.tar.gz
+    - name: run tests
       run: |
-          uv pip install pytest molviewspec
-          uv pip install dist/*.tar.gz
-          python -m pytest tests
+          uv run  pytest tests
           
