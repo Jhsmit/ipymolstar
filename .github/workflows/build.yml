@@ -31,6 +31,6 @@ jobs:
     - name: Run tests
       run: |
         source .venv/bin/activate
-        uv pip install pytest
+        uv pip install pytest molviewspec
         pytest tests
         
