@@ -1,11 +1,3 @@
-# /// script
-# dependencies = [
-#   "requests<3",
-#   "rich",
-# ]
-# ///
-
-
 import solara
 from ipymolstar import PDBeMolstar, MolViewSpec
 from molviewspec import create_builder
