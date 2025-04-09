@@ -27,8 +27,9 @@ jobs:
         uv venv
         source .venv/bin/activate
         uv pip install pytest molviewspec
-        pytest tests
         uv pip install dist/*.tar.gz
+        pytest tests
+        
 
 
         
