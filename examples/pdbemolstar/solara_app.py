@@ -7,7 +7,8 @@ import requests
 import solara
 import solara.lab
 from Bio.PDB import PDBParser, Residue, Structure
-from ipymolstar import THEMES, PDBeMolstar
+from ipymolstar import PDBeMolstar
+from ipymolstar.pdbemolstar import THEMES
 from matplotlib import colormaps
 from matplotlib.colors import Normalize
 from solara.alias import rv

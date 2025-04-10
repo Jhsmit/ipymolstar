@@ -64,17 +64,43 @@ view
 See the example notebook for more advanced usage. 
 Solara example code can be found [here](https://github.com/Jhsmit/ploomber-solara-ipymolstar)
 
-## Cite
+## Citing
 
-`ipymolstar` uses [anywidget](https://github.com/manzt/anywidget) to create a widget based on the [PDBe integration](https://github.com/molstar/pdbe-molstar) of [Mol*](https://molstar.org/).
+`ipymolstar` uses [anywidget](https://github.com/manzt/anywidget) to create a widgets based on [Mol*](https://molstar.org/)
 
-When using `ipymolstar`, please cite:
+To cite Mol*:
+> David Sehnal, Sebastian Bittrich, Mandar Deshpande, Radka Svobodová, Karel Berka, Václav Bazgier, Sameer Velankar, Stephen K Burley, Jaroslav Koča, Alexander S Rose: Mol* Viewer: modern web app for 3D visualization and analysis of large biomolecular structures, Nucleic Acids Research, 2021; [10.1093/nar/gkab31](https://doi.org/10.1093/nar/gkab314).
 
-David Sehnal, Sebastian Bittrich, Mandar Deshpande, Radka Svobodová, Karel Berka, Václav Bazgier, Sameer Velankar, Stephen K Burley, Jaroslav Koča, Alexander S Rose: Mol* Viewer: modern web app for 3D visualization and analysis of large biomolecular structures, Nucleic Acids Research, 2021; [10.1093/nar/gkab31](https://doi.org/10.1093/nar/gkab314).
+
+### PDBeMolstar
+The PDBeMolstar widget is based on the [PDBe integration](https://github.com/molstar/pdbe-molstar) of Mol*.
+
+
+### MolViewSpec
+
+The MolViewSpec widget is based on [MolViewSpec](https://github.com/molstar/mol-view-spec). To cite MolViewSpec:
+
+> Sebastian Bittrich, Adam Midlik, Mihaly Varadi, Sameer Velankar, Stephen K. Burley, Jasmine Y. Young, David Sehnal, Brinda Vallat: Describing and Sharing Molecular Visualizations Using the MolViewSpec Toolkit, Current Protocols, 2024; [10.1002/cpz1.1099](https://doi.org/10.1002/cpz1.1099)
 
 See also the [RCSB citation policies](https://www.rcsb.org/pages/policies) for additional citation information.
 
 ## Development
+
+
+The molviewspec widget front-end code bundles it's JavaScript dependencies. After setting up Python,
+make sure to install these dependencies locally:
+
+```sh
+npm install
+```
+
+While developing, you can run the following in a separate terminal to automatically
+rebuild JavaScript as you make changes:
+
+```sh
+npm run dev
+```
+
 
 ### Creating a new release
 
@@ -84,7 +110,7 @@ See also the [RCSB citation policies](https://www.rcsb.org/pages/policies) for a
 
 ### Hot reloading
 
-To enable anywidget hot reloading, you need to set th env var `ANYWIDGET_HMR` to 1. 
+To enable anywidget hot reloading, you need to set the env var `ANYWIDGET_HMR` to 1. 
 
 Windows:
 ```bash

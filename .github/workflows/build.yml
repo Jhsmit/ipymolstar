@@ -1,0 +1,39 @@
+name: Test App Packaging
+# https://github.com/astral-sh/uv/issues/1386
+on: [push]
+
+jobs:
+  test-packaging:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v3
+
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.10'
+
+    - name: Install hatch
+      run: pip install hatch
+
+    - name: Build project
+      run: |
+        npm install
+        npm run build
+        hatch build
+    - name: check the tarball
+      run: |
+        tar -tzf dist/*.tar.gz
+    - name: Install uv
+      run: pip install uv
+
+    - name: Create and activate venv, install package
+      run: | 
+        uv venv
+        source .venv/bin/activate
+        echo PATH=$PATH >> $GITHUB_ENV
+        uv pip install pytest molviewspec
+        uv pip install dist/*.tar.gz
+        python -m pytest tests
+ 
+          

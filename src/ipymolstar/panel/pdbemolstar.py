@@ -1,7 +1,7 @@
 import pathlib
 from typing import Optional
 
-from ipymolstar.widget import THEMES, Color, QueryParam, ResetParam
+from ipymolstar.pdbemolstar import THEMES, Color, QueryParam, ResetParam
 
 try:
     import panel as pn
@@ -13,8 +13,10 @@ from panel.custom import AnyWidgetComponent
 
 
 class PDBeMolstar(AnyWidgetComponent):
-    _esm = pathlib.Path(__file__).parent / "widget.js"
-    _stylesheets = [str(pathlib.Path(__file__).parent / "pdbe-light.css")]
+    _esm = pathlib.Path(__file__).parent.parent / "static" / "pdbemolstar.js"
+    _stylesheets = [
+        str(pathlib.Path(__file__).parent.parent / "static" / "pdbe-light.css")
+    ]
 
     width = param.String(default="800px")
     height = param.String(default="500px")
@@ -36,7 +38,8 @@ class PDBeMolstar(AnyWidgetComponent):
             "ball-and-stick",
             "carbohydrate",
             "ellipsoid",
-            "gaussian-surface" "molecular-surface",
+            "gaussian-surface",
+            "molecular-surface",
             "point",
             "putty",
             "spacefill",

@@ -10,7 +10,7 @@ import numpy as np
 import pandas as pd
 import solara
 from cmap import Colormap
-from ipymolstar.widget import PDBeMolstar
+from ipymolstar import PDBeMolstar
 
 # color limits in kJ/mol
 VMIN = 10
