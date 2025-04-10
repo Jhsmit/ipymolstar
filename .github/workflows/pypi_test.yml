@@ -20,7 +20,10 @@ jobs:
     - name: Install Hatch
       run: pip install hatch
     - name: Build
-      run: hatch build
+      run: |
+        npm install
+        npm run build
+        hatch build
     - name: Publish distribution 📦 to Test PyPI
       uses: pypa/gh-action-pypi-publish@release/v1
       with:
