@@ -16,5 +16,5 @@ except ImportError:
 else:
     from ipymolstar.molviewspec import MolViewSpec  # type: ignore
 
-__version__ = "0.0.9"
+__version__ = "0.1.0"
 __all__ = ["MolViewSpec", "PDBeMolstar", "__version__"]
