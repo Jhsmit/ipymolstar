@@ -1,15 +1,20 @@
+import copy
+import math
+import warnings
 from io import StringIO
+
+import numpy as np
 import requests
 import solara
-from molviewspec import create_builder
-from ipymolstar.molviewspec import MolViewSpec
-import math
-import copy
-from molviewspec import GlobalMetadata
-
-from Bio.PDB import PDBParser
-import numpy as np
 import solara.lab
+from Bio.PDB import PDBParser
+from Bio.PDB.PDBExceptions import PDBConstructionWarning
+from molviewspec import GlobalMetadata, create_builder
+
+from ipymolstar.molviewspec import MolViewSpec
+
+# Suppress only PDBConstructionWarnings
+warnings.simplefilter("ignore", PDBConstructionWarning)
 
 
 # https://github.com/molstar/mol-view-spec/blob/def8ad6cdc351dbe01e29bf717e58e004bd10408/molviewspec/app/api/examples.py#L1819
