@@ -9,3 +9,4 @@ __pycache__
 dev/
 _pdb/
 src/ipymolstar/static/molviewspec.js
+src/ipymolstar/static/molviewspec.css
