@@ -17,7 +17,10 @@ jobs:
       run: pip install hatch
 
     - name: Build project
-      run: hatch build
+      run: |
+        npm install
+        npm run build
+        hatch build
     - name: check the tarball
       run: |
         tar -tzf dist/*.tar.gz
