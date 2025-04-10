@@ -1,16 +1,15 @@
+from io import StringIO
+import requests
 import solara
 from molviewspec import create_builder
 from ipymolstar.molviewspec import MolViewSpec
 import math
 import copy
-from molviewspec import create_builder, State, GlobalMetadata
+from molviewspec import GlobalMetadata
 
-from Bio.PDB import PDBList, PDBParser
-from pathlib import Path
+from Bio.PDB import PDBParser
 import numpy as np
 import solara.lab
-
-# %%
 
 
 # https://github.com/molstar/mol-view-spec/blob/def8ad6cdc351dbe01e29bf717e58e004bd10408/molviewspec/app/api/examples.py#L1819
@@ -36,15 +35,20 @@ def target_spherical_to_tpu(
     return target, position, up
 
 
-pdb_path = Path() / "_pdb"
-pdb_path.mkdir(exist_ok=True)
+def fetch_pdb(pdb_id) -> StringIO:
+    url = f"https://files.rcsb.org/download/{pdb_id}.pdb"
+    response = requests.get(url)
+    if response.status_code == 200:
+        sio = StringIO(response.text)
+        sio.seek(0)
+        return sio
+    else:
+        raise requests.HTTPError(f"Failed to download PDB file {pdb_id}")
 
 
-def load_structure(pdb_id: str, pdb_path: Path):
+def load_structure(pdb_id: str):
     parser = PDBParser()
-    pdbl = PDBList(pdb=pdb_path, verbose=False)
-    pdb_file = pdbl.retrieve_pdb_file(pdb_id, file_format="pdb")
-    structure = parser.get_structure("1qyn", pdb_file)
+    structure = parser.get_structure(pdb_id, fetch_pdb(pdb_id))
 
     return structure
 
@@ -79,6 +83,9 @@ def Page():
     phi = solara.use_reactive(0.0)
     theta = solara.use_reactive(0.0)
 
+    with solara.AppBar():
+        solara.AppBarTitle("MolViewSpec + Solara: Camera control from python")
+
     def load_structure_and_com():
         builder = create_builder()
         (
@@ -90,7 +97,7 @@ def Page():
             .color(color="blue")
         )
 
-        structure = load_structure(pdb_id.value, pdb_path)
+        structure = load_structure(pdb_id.value)
         com = calculate_com(structure)
 
         return builder, com
