@@ -18,6 +18,3 @@ path = "src/ipymolstar/__init__.py"
 only-packages = true
 artifacts = ["src/ipymolstar/static/*"]
 exclude = ["**/.venv*"]
-
-[tool.hatch.build.targets.wheel]
-include = ["ipymolstar/static/**"]
