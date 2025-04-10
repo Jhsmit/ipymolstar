@@ -18,7 +18,9 @@ jobs:
 
     - name: Build project
       run: hatch build
-
+    - name: check the tarball
+      run: |
+        tar -tzf dist/*.tar.gz
     - name: Install uv
       run: pip install uv
 
