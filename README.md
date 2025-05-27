@@ -71,6 +71,9 @@ Solara example code can be found [here](https://github.com/Jhsmit/ploomber-solar
 
 `ipymolstar` uses [anywidget](https://github.com/manzt/anywidget) to create a widgets based on [Mol*](https://molstar.org/)
 
+To cite `anywidget`:
+> Trevor Manz, Nezar Abdennur, Nils Gehlenborg: anywidget: reusable widgets for interactive analysis and visualization in computational notebooks. Journal of Open Source Software, 2024; [10.21105/joss.06939](https://doi.org/10.21105/joss.06939)
+
 To cite Mol*:
 > David Sehnal, Sebastian Bittrich, Mandar Deshpande, Radka Svobodová, Karel Berka, Václav Bazgier, Sameer Velankar, Stephen K Burley, Jaroslav Koča, Alexander S Rose: Mol* Viewer: modern web app for 3D visualization and analysis of large biomolecular structures, Nucleic Acids Research, 2021; [10.1093/nar/gkab31](https://doi.org/10.1093/nar/gkab314).
 
