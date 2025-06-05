@@ -32,7 +32,7 @@ def test_molviewspec():
     )
 
     molview_spec = MolViewSpec(
-        msvj_data=builder.get_state(),
+        msvj_data=builder.get_state().dumps(),
     )
     # Check if the instance is created successfully
     assert isinstance(molview_spec, MolViewSpec), (

@@ -31,4 +31,4 @@ def Page():
                 molecule_id=molecule_id.value,
             )
         with solara.Card("MolViewSpec"):
-            MolViewSpec.element(msvj_data=builder.get_state())
+            MolViewSpec.element(msvj_data=builder.get_state().dumps())

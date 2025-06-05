@@ -143,8 +143,9 @@ def Page():
                     theta=theta.value,
                     radius=radius.value,
                 )
-                local_builder = copy.deepcopy(builder)
+                local_builder = builder.model_copy()
                 local_builder.camera(target=target, position=position, up=up)
-                msvj_data = local_builder.get_state()
+
+                msvj_data = local_builder.get_state().dumps()
                 with solara.Div(style="opacity: 0.3" if load_task.pending else None):
                     view = MolViewSpec.element(msvj_data=msvj_data)
