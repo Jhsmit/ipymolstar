@@ -13,6 +13,7 @@ Give `ipymolstar` a spin without even installing python!
  - Grab a cup and play with the [solara](https://app.py.cafe/jhsmit/ipymolstar-solara), [pyshiny](https://py.cafe/jhsmit/ipymolstar-shiny) or [panel](https://app.py.cafe/jhsmit/ipymolstar-panel) live demo's on PyCafé ☕
   - Upload your Alphafold3 .zip result and view plddt or chain colors in the `solarafold` result viewer on [huggingface](https://huggingface.co/spaces/Jhsmit/solarafold) 🤗
  - Control the camera 📷 with [MolViewSpec](https://pypi.org/project/molviewspec/) from python 🐍 in a solara ☀️ dashboard on [PyCafé](https://py.cafe/jhsmit/molviewspec-protein-visualization) ☕
+ - Use [MolViewSpec](https://pypi.org/project/molviewspec/) to define primitives 🟦🟢 and animations 🎞️, check out the Double Hooke [3DPGA dynamics](https://enki.ws/ganja.js/examples/pga_dyn.html) example on [PyCafé](https://py.cafe/jhsmit/ipymolstar-kingdon-double-hooke) ☕, adapted from the [kingdon](https://github.com/tBuLi/kingdon) teahouse 🍵;
 
 You can find other examples in the examples directory.
 
