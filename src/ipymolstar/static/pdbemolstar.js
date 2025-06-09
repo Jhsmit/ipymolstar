@@ -248,18 +248,18 @@ function render({ model, el }) {
     subscribe(model, name, callback)
   );
 
-  document.addEventListener("PDB.molstar.mouseover", (e) => {
+  viewerContainer.addEventListener("PDB.molstar.mouseover", (e) => {
     const eventData = e.eventData;
     model.set("mouseover_event", eventData);
     model.save_changes();
   });
 
-  document.addEventListener("PDB.molstar.mouseout", (e) => {
+  viewerContainer.addEventListener("PDB.molstar.mouseout", (e) => {
     model.set("mouseout_event", !model.get("mouseout_event") );
     model.save_changes();
   });
 
-  document.addEventListener("PDB.molstar.click", (e) => {
+  viewerContainer.addEventListener("PDB.molstar.click", (e) => {
     const eventData = e.eventData;
     model.set("click_event", eventData);
     model.save_changes();
